@@ -1,12 +1,12 @@
 // eslint-disable-next-line no-use-before-define
 import React from "react";
 import { useLocation, useHistory } from "react-router-dom";
+import { getAuthorizedToken } from "api/authorization";
 import {
   useAppDispatch as useDispatch,
   useAppSelector as useSelector,
 } from "../../redux/store";
 import { setLoginState } from "../../redux/actions/authorization";
-import { getAuthorizedToken } from "api/authorization";
 
 type locationiIdentifier = {
   from: { pathname: string };

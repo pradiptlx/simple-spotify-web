@@ -28,18 +28,12 @@ module.exports = {
     "jest",
   ],
   rules: {
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        ts: "never",
-        tsx: "never",
-      },
-    ],
     "react/jsx-filename-extension": ["warn", { extensions: [".tsx"] }],
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "@typescript-eslint/no-var-requires": "off",
+    "import/extensions": ["off"],
+    "react/prop-types": "off",
   },
   overrides: [
     {
