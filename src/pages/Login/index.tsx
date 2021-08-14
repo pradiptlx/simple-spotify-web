@@ -49,7 +49,7 @@ const Login: React.FC<unknown> = () => {
   }, [isAccessTokenExists, isTokenExpired, history, from]);
 
   return (
-    <div className="h-screen dark:bg-gray-800 flex">
+    <div className="h-screen bg-white dark:bg-gray-800 flex">
       <div className="m-auto">
         <svg
           className="mx-auto mb-5"
@@ -58,7 +58,7 @@ const Login: React.FC<unknown> = () => {
           height="96px"
           viewBox="0 0 24 24"
           width="96px"
-          fill="#FFFFFF"
+          fill="rgb(55, 65, 81)"
         >
           <g>
             <rect fill="none" height="24" width="24" />
@@ -68,7 +68,7 @@ const Login: React.FC<unknown> = () => {
           </g>
         </svg>
         <button
-          className="dark:text-white flex float-right mx-4 rounded-full py-2 px-4 dark:bg-gray-700"
+          className="bg-gray-200 text-gray-800 flex float-right mx-4 rounded-full py-2 px-4 dark:bg-gray-700 dark:text-white "
           onClick={onLoginBtnHandler}
           type="button"
         >

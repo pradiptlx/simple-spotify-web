@@ -102,7 +102,7 @@ const Tracks: React.FC<tracksProps> = (props) => {
         <div
           className={`tracks flex-shrink-0 rounded-lg shadow-lg text-center mt-10 dark:bg-gray-700 ${
             !selectedTrack[data.id]?.active
-              ? "transition duration-500 ease-in-out hover:bg-gray-900 transform hover:-translate-y-2 hover:scale-105"
+              ? "transition duration-500 ease-in-out hover:bg-gray-200 dark:hover:bg-gray-900 transform hover:-translate-y-2 hover:scale-105"
               : ""
           }`}
           key={data.uri}
