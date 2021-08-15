@@ -1,0 +1,23 @@
+.gridContainer {
+  display: grid;
+  grid-template-columns: [start-home] 0.25fr [end-home start-create-playlist] 0.5fr [end-create-playlist start-center] 1fr 1fr [end-center start-login] 0.5fr [end-login];
+  justify-items: center;
+  align-items: center;
+  /* gap: 5px 5px; */
+}
+
+.homeNav {
+  grid-column-start: 1;
+}
+
+.createPlaylistNav {
+  grid-column-start: 2;
+}
+
+.loginNav {
+  grid-column: start-login/end-login;
+}
+
+.navItem {
+  @apply text-white block px-3 py-2 rounded-md text-base font-medium;
+}

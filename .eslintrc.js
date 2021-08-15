@@ -10,6 +10,7 @@ module.exports = {
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
+    "plugin:jest/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -24,20 +25,15 @@ module.exports = {
     "@typescript-eslint",
     "@typescript-eslint/eslint-plugin",
     "prettier",
+    "jest",
   ],
   rules: {
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        ts: "never",
-        tsx: "never",
-      },
-    ],
     "react/jsx-filename-extension": ["warn", { extensions: [".tsx"] }],
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "@typescript-eslint/no-var-requires": "off",
+    "import/extensions": ["off"],
+    "react/prop-types": "off",
   },
   overrides: [
     {
@@ -45,6 +41,20 @@ module.exports = {
       parser: "@typescript-eslint/parser",
       parserOptions: {
         project: "./tsconfig.json",
+      },
+    },
+    {
+      files: ["**/*.test.js"],
+      env: {
+        jest: true,
+      },
+      plugins: ["jest"],
+      rules: {
+        "jest/no-disabled-tests": "warn",
+        "jest/no-focused-tests": "error",
+        "jest/no-identical-title": "error",
+        "jest/prefer-to-have-length": "warn",
+        "jest/valid-expect": "error",
       },
     },
   ],

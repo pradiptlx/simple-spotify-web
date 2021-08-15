@@ -1,4 +1,5 @@
 const path = require("path");
+
 module.exports = {
   rootDir: path.join(__dirname, ".."),
   moduleDirectories: [
@@ -16,4 +17,5 @@ module.exports = {
     "\\.module\\.css$": "identity-obj-proxy",
     "\\.css$": require.resolve("./src/test/style-mock.js"),
   },
+  watchPlugins: ["jest-runner-eslint/watch-fix"],
 };
