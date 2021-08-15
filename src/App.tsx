@@ -104,16 +104,14 @@ function App(): React.ReactElement {
   React.useEffect(() => {
     // Manual Dark Theme Mode
     const isDarkThemeExists = Boolean(localStorage.getItem("darkTheme"));
-    if (darkTheme || isDarkThemeExists) {
+    if (darkTheme) {
       document.documentElement.classList.add("dark");
-      if (!isDarkThemeExists) {
-        localStorage.setItem("darkTheme", "true");
-      }
-    } else if (!isFirstMounted) {
+      localStorage.setItem("darkTheme", "true");
+    } else if (!darkTheme && isDarkThemeExists && !isFirstMounted) {
       document.documentElement.classList.remove("dark");
       localStorage.removeItem("darkTheme");
     }
-  }, [darkTheme]);
+  }, [darkTheme, isFirstMounted]);
 
   // Parsing access token from local storage or from URL callback
   React.useEffect(() => {
