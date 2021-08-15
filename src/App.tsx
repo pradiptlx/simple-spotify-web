@@ -12,6 +12,7 @@ import {
   Redirect,
   RouteComponentProps,
 } from "react-router-dom";
+import { setDarkTheme } from "redux/actions/app";
 import {
   setAccessToken,
   setExpiredTokenTime,
@@ -67,6 +68,7 @@ function App(): React.ReactElement {
   const { isLogin, isTokenExpired, isAccessTokenExists, accessToken } =
     useSelector((state) => state.authorization);
   const currentUser = useSelector((state) => state.user);
+  const { darkTheme } = useSelector((state) => state.app);
   const [isFirstMounted, setIsFirstMounted] = React.useState(true);
 
   const routes = [
@@ -89,7 +91,26 @@ function App(): React.ReactElement {
     if (isFirstMounted) {
       setIsFirstMounted(false);
     }
+    if (
+      localStorage.darkTheme === "true" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+      if (!darkTheme) setDarkTheme(true);
+    }
   }, []);
+
+  React.useEffect(() => {
+    // Manual Dark Theme Mode
+    if (darkTheme) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("darkTheme", "true");
+    }else {
+     document.documentElement.classList.remove("dark");
+     localStorage.removeItem("darkTheme"); 
+    }
+  }, [darkTheme]);
 
   // Parsing access token from local storage or from URL callback
   React.useEffect(() => {

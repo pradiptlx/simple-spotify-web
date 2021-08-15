@@ -18,6 +18,7 @@ import {
 import { setCurrentUser } from "redux/actions/user";
 import { initialUserState } from "redux/reducers/user";
 
+import ToggleTheme from "components/ToggleTheme";
 import styles from "./style.module.css";
 
 const Navbar = (): React.ReactElement => {
@@ -91,6 +92,11 @@ const Navbar = (): React.ReactElement => {
               Create Playlist
             </p>
           </NavLink>
+
+          <div className={styles.themeToggle}>
+            <ToggleTheme />
+          </div>
+
           <div className={styles.loginNav}>
             {userProfile.id && userProfile.imageUrl && (
               <>
