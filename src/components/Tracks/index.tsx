@@ -2,7 +2,7 @@
 import React from "react";
 // import Mock from "../../data";
 import { selectedTrackIdentifier } from "pages/CreatePlaylist";
-import { TrackObject } from "api/fetch";
+import { TrackObject } from "api/interfaces";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
 import AlbumArt from "../AlbumArt";

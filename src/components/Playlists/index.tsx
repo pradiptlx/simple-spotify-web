@@ -1,5 +1,5 @@
 import React from "react";
-import { SimplifiedPlaylistObject } from "api/fetch";
+import { SimplifiedPlaylistObject } from "api/interfaces";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
 import AlbumArt from "../AlbumArt";
@@ -73,12 +73,12 @@ const Playlists: React.FC<playlistsProps> = (props) => {
           className="max-w-sm rounded overflow-hidden shadow-lg text-center dark:bg-gray-700 my-10"
         >
           <AlbumArt
-            albumArtFetched={playlist.imageUrl}
-            altText={playlist.title}
+            albumArtFetched={playlist.images?playlist.images[0].url: ''}
+            altText={playlist.name}
           />
           <div className="px-6 py-4">
             <div className="dark:text-white font-bold text-xl mb-2">
-              {playlist.title}
+              {playlist.name}
             </div>
             <p className="dark:text-white text-base">{playlist.description}</p>
           </div>

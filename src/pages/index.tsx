@@ -4,12 +4,12 @@ import {
   useAppSelector as useSelector,
 } from "redux/store";
 import { useHistory } from "react-router-dom";
-import { setExpiredTokenTime } from "../redux/actions/authorization";
-import Playlists from "../components/Playlists";
+import { setExpiredTokenTime } from "redux/actions/authorization";
+import Playlists from "components/Playlists";
 import {
   getCurrentUserPlaylists,
-  SimplifiedPlaylistObject,
-} from "../api/fetch";
+} from "api/fetch";
+import {SimplifiedPlaylistObject} from 'api/interfaces'
 
 function Home(): React.ReactElement {
   const dispatch = useDispatch();

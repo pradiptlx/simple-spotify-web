@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable camelcase */
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import qs from "querystring";
+import {
+  PlaylistObject,
+  PrivateUserObject,
+  SimplifiedPlaylistObject,
+  TrackObject,
+} from "./interfaces";
 
 type errorArgFn = {
   error: string;
@@ -66,95 +72,6 @@ type postAPIRequestFn<Q> = (
   successCallbackFn: (response: any) => void,
   errorCallbackFn: (errorArg: errorArgFn) => void
 ) => Promise<void>;
-
-// **********************************************
-// API Response
-interface ExternalUrlObject {
-  spotify: string;
-}
-
-interface ImageObject {
-  url: string;
-  height: string | null;
-  width: string | null;
-}
-
-interface PlaylistTracksRefObject {
-  href: string;
-  total: number;
-}
-
-interface ArtistObject {
-  external_urls: ExternalUrlObject;
-  href: string;
-  id: string;
-  genres: string[];
-  name: string;
-  images: ImageObject[];
-  uri: string;
-}
-
-export interface TrackObject {
-  album: SimplifiedAlbumObject;
-  artists: ArtistObject[];
-  id: string;
-  href: string;
-  external_urls: ExternalUrlObject;
-  explicit: boolean;
-  name: string;
-  uri: string;
-}
-
-export interface PrivateUserObject {
-  display_name: string;
-  email: string;
-  id: string;
-  images: ImageObject[];
-  external_urls: ExternalUrlObject;
-  displayName: string;
-  spotifyUrl: string;
-  imageUrl: string;
-}
-export interface PlaylistObject {
-  id: string;
-  collaborative: boolean;
-  description: string;
-  external_urls: ExternalUrlObject;
-  href: string;
-  name: string;
-  images: ImageObject[];
-  public: boolean;
-  tracks: PlaylistTrackObject[];
-  uri: string;
-  spotifyUrl: string;
-}
-
-interface PlaylistTrackObject {
-  added_at: Date;
-  track: TrackObject;
-}
-
-interface SimplifiedAlbumObject {
-  artists: ArtistObject[];
-  id: string;
-  images: ImageObject[];
-  name: string;
-}
-
-export interface SimplifiedPlaylistObject {
-  description: string;
-  external_urls: ExternalUrlObject;
-  href: string;
-  id: string;
-  images: ImageObject[];
-  name: string;
-  public: boolean;
-  tracks: PlaylistTracksRefObject[];
-  imageUrl: string;
-  spotifyUrl: string;
-  isPublic: boolean;
-  title: string;
-}
 
 // **********************************************
 
@@ -242,15 +159,7 @@ const createPlaylist: postAPIRequestFn<createPlaylistAPIIdentifier> = async (
       }
     )
     .then((response) => {
-      // eslint-disable-next-line camelcase
-      const { id, name, description, external_urls }: PlaylistObject =
-        response.data;
-      setCurrentPlaylistFn({
-        id,
-        title: name,
-        desc: description,
-        spotifyUrl: external_urls.spotify,
-      });
+      setCurrentPlaylistFn(response.data);
     })
     .catch((error) => {
       const statusCode = error.response?.status;
@@ -276,30 +185,10 @@ const getCurrentUserPlaylists: getQueryAPIRequestFn<getCurrentUserPlaylistsAPIId
       )
       .then((response) => {
         if (response.data && response.data?.items) {
-          const responseObject: SimplifiedPlaylistObject[] =
-            response.data.items;
-          let playlists = responseObject.map(
-            ({
-              id,
-              description,
-              name,
-              images,
-              external_urls,
-              public: isPublic,
-            }) => ({
-              id,
-              description,
-              title: name,
-              imageUrl: images[0]?.url,
-              spotifyUrl: external_urls?.spotify,
-              isPublic,
-            })
-          );
-          if (publicOnly) {
-            playlists = playlists.filter((playlist) => playlist.isPublic);
-          }
-
-          setPlaylistsFn(playlists);
+          const publicPlaylists: SimplifiedPlaylistObject[] = publicOnly? response.data.items.filter(
+            (data: SimplifiedPlaylistObject) => data.public
+          ): response.data.items;
+          setPlaylistsFn(publicPlaylists);
         }
       })
       .catch((error) => {
