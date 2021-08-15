@@ -88,27 +88,30 @@ function App(): React.ReactElement {
 
   // When isLogin state is initialized, its state is false so handle with isFirstMounted to prevent redirecting to Login component each refresh
   React.useEffect(() => {
+    const isDarkThemeExists = Boolean(localStorage.getItem("darkTheme"));
     if (isFirstMounted) {
       setIsFirstMounted(false);
-    }
-    if (
-      localStorage.darkTheme === "true" ||
-      (!("theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-      if (!darkTheme) setDarkTheme(true);
+      if (
+        isDarkThemeExists ||
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        document.documentElement.classList.add("dark");
+        dispatch(setDarkTheme(true));
+      }
     }
   }, []);
 
   React.useEffect(() => {
     // Manual Dark Theme Mode
-    if (darkTheme) {
+    const isDarkThemeExists = Boolean(localStorage.getItem("darkTheme"));
+    if (darkTheme || isDarkThemeExists) {
       document.documentElement.classList.add("dark");
-      localStorage.setItem("darkTheme", "true");
-    }else {
-     document.documentElement.classList.remove("dark");
-     localStorage.removeItem("darkTheme"); 
+      if (!isDarkThemeExists) {
+        localStorage.setItem("darkTheme", "true");
+      }
+    } else if (!isFirstMounted) {
+      document.documentElement.classList.remove("dark");
+      localStorage.removeItem("darkTheme");
     }
   }, [darkTheme]);
 
