@@ -14,6 +14,7 @@ import {
 } from "react-router-dom";
 import { setDarkTheme } from "redux/actions/app";
 import { createTheme, Theme, ThemeProvider } from "@material-ui/core/styles";
+import PlaylistPage from "pages/Playlist";
 import {
   setAccessToken,
   setExpiredTokenTime,
@@ -78,12 +79,21 @@ function App(): React.ReactElement {
       component: Home,
       isPrivate: true,
       state: null,
+      exact: true,
     },
     {
       pathname: "/create-playlist",
       component: CreatePlaylist,
       isPrivate: true,
       state: null,
+      exact: true,
+    },
+    {
+      pathname: "/playlist/:playlistId",
+      component: PlaylistPage,
+      isPrivate: true,
+      state: null,
+      exact: true,
     },
   ];
 
@@ -212,7 +222,7 @@ function App(): React.ReactElement {
               return (
                 <PrivateRoute
                   key={`private_${route.pathname}`}
-                  exact // TODO: Change exact behaviour
+                  exact={route.exact}
                   path={route.pathname}
                   isPrivate
                   isLogin={isLogin || isFirstMounted}
@@ -223,7 +233,7 @@ function App(): React.ReactElement {
             return (
               <Route
                 key={`public_${route.pathname}`}
-                exact
+                exact={route.exact}
                 path={route.pathname}
                 component={route.component}
               />

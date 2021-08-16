@@ -63,21 +63,27 @@ const Sidebar: React.FC<sidebarProps> = (props) => {
           </ListSubheader>
           <Divider component="li" variant="inset" />
           <ListItem className={classes.listItem}>
-            <ListItemText>
-              <LibraryMusicOutlinedIcon /> Tracks
-            </ListItemText>
+            <NavLink to="/me/tracks">
+              <ListItemText>
+                <LibraryMusicOutlinedIcon /> Tracks
+              </ListItemText>
+            </NavLink>
           </ListItem>
 
           <ListItem className={classes.listItem}>
-            <ListItemText>
-              <AlbumOutlinedIcon /> Albums
-            </ListItemText>
+            <NavLink to="/me/albums">
+              <ListItemText>
+                <AlbumOutlinedIcon /> Albums
+              </ListItemText>
+            </NavLink>
           </ListItem>
 
           <ListItem className={classes.listItem}>
-            <ListItemText>
-              <PeopleAltOutlinedIcon /> Artists
-            </ListItemText>
+            <NavLink to="/me/artists">
+              <ListItemText>
+                <PeopleAltOutlinedIcon /> Artists
+              </ListItemText>
+            </NavLink>
           </ListItem>
         </ul>
       </li>
@@ -93,7 +99,9 @@ const Sidebar: React.FC<sidebarProps> = (props) => {
               key={`playlist-${playlist.id}`}
               className={classes.playlistItem}
             >
-              <ListItemText>{playlist.name}</ListItemText>
+              <NavLink to={`/playlist/${playlist.id}`}>
+                <ListItemText>{playlist.name}</ListItemText>
+              </NavLink>
             </ListItem>
           ))}
         </ul>
