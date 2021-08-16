@@ -83,3 +83,29 @@ export interface SimplifiedPlaylistObject {
   public: boolean;
   tracks: PlaylistTracksRefObject[];
 }
+
+export interface AlbumObject {
+  album_type: string;
+  artists: ArtistObject[];
+  external_urls: ExternalUrlObject;
+  genres: string[];
+  href: string;
+  id: string;
+  images: ImageObject[];
+  label: string;
+  name: string;
+  popularity: number;
+  release_date: string;
+  tracks: TrackObject;
+  uri: string;
+}
+
+export interface SavedAlbumObject {
+  added_at: Date;
+  albums: AlbumObject[];
+}
+
+export interface SavedTrackObject {
+  added_at: Date;
+  tracks: TrackObject[];
+}
