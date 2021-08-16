@@ -73,14 +73,18 @@ const Playlists: React.FC<playlistsProps> = (props) => {
           className="max-w-sm rounded overflow-hidden shadow-lg text-center dark:bg-gray-700 my-10"
         >
           <AlbumArt
-            albumArtFetched={playlist.images?playlist.images[0].url: ''}
+            albumArtFetched={playlist.images ? playlist.images[0].url : ""}
             altText={playlist.name}
           />
           <div className="px-6 py-4">
             <div className="dark:text-white font-bold text-xl mb-2">
               {playlist.name}
             </div>
-            <p className="dark:text-white text-base">{playlist.description}</p>
+            <p
+              className="dark:text-white text-base"
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{ __html: playlist.description }}
+            />
           </div>
         </div>
       ))}
