@@ -13,6 +13,7 @@ import {
   RouteComponentProps,
 } from "react-router-dom";
 import { setDarkTheme } from "redux/actions/app";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import {
   setAccessToken,
   setExpiredTokenTime,
@@ -188,8 +189,18 @@ function App(): React.ReactElement {
     }
   }, [accessToken, isTokenExpired, isAccessTokenExists, currentUser.id]);
 
+  const materialComponentsTheme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          type: darkTheme ? "dark" : "light",
+        },
+      }),
+    [darkTheme]
+  );
+
   return (
-    <>
+    <ThemeProvider theme={materialComponentsTheme}>
       <BrowserRouter>
         <Navbar />
         <Switch>
@@ -220,7 +231,7 @@ function App(): React.ReactElement {
           })}
         </Switch>
       </BrowserRouter>
-    </>
+    </ThemeProvider>
   );
 }
 
