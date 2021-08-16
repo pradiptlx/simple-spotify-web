@@ -10,7 +10,7 @@ import TrackInfo from "../TrackTitle";
 
 type tracksProps = {
   trackData: TrackObject[];
-  selectedTrackFn: React.Dispatch<
+  selectedTrackFn?: React.Dispatch<
     React.SetStateAction<selectedTrackIdentifier>
   >;
 };
@@ -27,7 +27,9 @@ const Tracks: React.FC<tracksProps> = (props) => {
       [idTrack]: { active: !selectedTrack[idTrack]?.active, uri: uriTrack },
     };
     setSelectedTrack(newTracks);
-    selectedTrackFn(newTracks);
+    if (selectedTrackFn) {
+      selectedTrackFn(newTracks);
+    }
   };
 
   React.useEffect(() => {
