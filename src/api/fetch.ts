@@ -3,18 +3,19 @@
 import axios from "axios";
 import qs from "querystring";
 import {
+  PlaylistObject,
   PrivateUserObject,
   SavedAlbumObject,
   SimplifiedPlaylistObject,
   TrackObject,
 } from "./interfaces";
 
-type errorArgFn = {
+export type errorArgFn = {
   error: string;
   statusCode?: number;
 };
 
-type authorizationParams = {
+export type authorizationParams = {
   accessToken: string;
   isAccessTokenExists?: boolean;
   isTokenExpired?: boolean;
@@ -213,26 +214,27 @@ const getPlaylist: getQueryAPIRequestFn<pathParameter> = async (
   setCurrentPlaylistFn,
   errorCallback
 ): Promise<void> => {
-  axios
-    .get(`${process.env.REACT_APP_SPOTIFY_API_URL}/playlists/${playlistId}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .then((response) => {
-      const { id, name, description, external_urls, tracks } = response.data;
-      setCurrentPlaylistFn({
-        id,
-        name,
-        description,
-        external_urls,
-        tracks,
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_SPOTIFY_API_URL}/playlists/${playlistId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const responseObject: PlaylistObject = response.data;
+    setCurrentPlaylistFn(responseObject);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      errorCallback({
+        error: error.message,
+        statusCode: error.response?.status,
       });
-    })
-    .catch((error) => {
-      const statusCode = error.response?.status;
-      errorCallback({ error, statusCode });
-    });
+    }
+  }
 };
 
 const addTrackToPlaylist: getQueryAPIRequestFn<pathParameter & queryParameter> =

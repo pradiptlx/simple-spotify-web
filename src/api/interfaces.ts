@@ -56,7 +56,7 @@ export interface PlaylistObject {
   name: string;
   images: ImageObject[];
   public: boolean;
-  tracks: PlaylistTrackObject[];
+  tracks: PagingObject<PlaylistTrackObject>;
   uri: string;
   spotifyUrl: string;
 }
@@ -108,4 +108,13 @@ export interface SavedAlbumObject {
 export interface SavedTrackObject {
   added_at: Date;
   tracks: TrackObject[];
+}
+
+export interface PagingObject<T> {
+  href: string;
+  items: T[];
+  offset: number;
+  total: number;
+  previous: string;
+  next: string;
 }
