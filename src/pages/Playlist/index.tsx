@@ -7,12 +7,7 @@ import {
 import { useParams, useHistory } from "react-router-dom";
 import Sidebar from "components/Sidebar";
 import Tracks from "components/Tracks";
-import {
-  PlaylistObject,
-  SimplifiedPlaylistObject,
-  TrackObject,
-} from "api/interfaces";
-import { selectedTrackIdentifier } from "pages/CreatePlaylist";
+import { PlaylistObject, TrackObject } from "api/interfaces";
 import { errorArgFn, getCurrentUserPlaylists, getPlaylist } from "api/fetch";
 import { setExpiredTokenTime } from "redux/actions/authorization";
 import { setPageData } from "redux/actions/app";
@@ -24,13 +19,9 @@ const PlaylistPage = (): React.ReactElement => {
   const { accessToken, isAccessTokenExists } = useSelector(
     (state) => state.authorization
   );
-
   const [tracks, setTracks] = React.useState<TrackObject[]>([]);
   const [currentPlalist, setCurrentPlaylist] =
     React.useState<Pick<PlaylistObject, "name" | "description" | "id">>();
-  const [userPlaylists, setUserPlaylists] = React.useState<
-    SimplifiedPlaylistObject[]
-  >([]);
   const errorFetchingHandler = ({ statusCode }: errorArgFn) => {
     if (statusCode === 400 || statusCode === 401) {
       dispatch(
@@ -70,7 +61,13 @@ const PlaylistPage = (): React.ReactElement => {
     getCurrentUserPlaylists(
       { limit: 50, offset: 0 },
       { accessToken },
-      setUserPlaylists,
+      (responseData) => {
+        dispatch(
+          setPageData({
+            currentUserPlaylists: responseData,
+          })
+        );
+      },
       ({ statusCode }) => {
         if (statusCode === 400 || statusCode === 401) {
           dispatch(
@@ -97,7 +94,7 @@ const PlaylistPage = (): React.ReactElement => {
     <div className="bg-white dark:bg-gray-800 min-h-screen">
       <div className="grid grid-cols-sidebar">
         <div className="h-full">
-          <Sidebar userPlaylists={userPlaylists} />
+          <Sidebar />
         </div>
 
         <div className="flex flex-col justify-center items-center">

@@ -1,5 +1,5 @@
 import React from "react";
-import { SimplifiedPlaylistObject } from "api/interfaces";
+import { useAppSelector as useSelector } from "redux/store";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -45,12 +45,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-type sidebarProps = {
-  userPlaylists: SimplifiedPlaylistObject[];
-};
-
-const Sidebar: React.FC<sidebarProps> = (props) => {
-  const { userPlaylists } = props;
+const Sidebar = (): React.ReactElement => {
+  const { currentUserPlaylists } = useSelector((state) => state.app);
 
   const classes = useStyles();
 
@@ -94,7 +90,7 @@ const Sidebar: React.FC<sidebarProps> = (props) => {
             Playlists
           </ListSubheader>
           <Divider component="li" variant="inset" />
-          {userPlaylists.map((playlist) => (
+          {currentUserPlaylists.map((playlist) => (
             <ListItem
               key={`playlist-${playlist.id}`}
               className={classes.playlistItem}

@@ -9,6 +9,7 @@ import Playlists from "components/Playlists";
 import { getCurrentUserPlaylists, getAllFeaturedPlaylists } from "api/fetch";
 import { SimplifiedPlaylistObject } from "api/interfaces";
 import Sidebar from "components/Sidebar";
+import { setPageData } from "redux/actions/app";
 
 function Home(): React.ReactElement {
   const dispatch = useDispatch();
@@ -17,10 +18,6 @@ function Home(): React.ReactElement {
   const { accessToken, isAccessTokenExists } = useSelector(
     (state) => state.authorization
   );
-
-  const [userPlaylists, setUserPlaylists] = React.useState<
-    SimplifiedPlaylistObject[]
-  >([]);
 
   const [featuredPlaylists, setFeaturedPlaylists] = React.useState<
     SimplifiedPlaylistObject[]
@@ -31,7 +28,9 @@ function Home(): React.ReactElement {
       await getCurrentUserPlaylists(
         { limit: 50, offset: 0 },
         { accessToken },
-        setUserPlaylists,
+        (responseData) => {
+          dispatch(setPageData({ currentUserPlaylists: responseData }));
+        },
         ({ statusCode }) => {
           if (statusCode === 400 || statusCode === 401) {
             dispatch(
@@ -72,7 +71,7 @@ function Home(): React.ReactElement {
     <div className="bg-white dark:bg-gray-800 min-h-screen">
       <div className="grid grid-cols-sidebar">
         <div className="h-full">
-          <Sidebar userPlaylists={userPlaylists} />
+          <Sidebar />
         </div>
 
         <div className="flex flex-col justify-center items-center">
