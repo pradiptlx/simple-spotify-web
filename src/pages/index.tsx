@@ -26,7 +26,7 @@ function Home(): React.ReactElement {
   React.useEffect(() => {
     if (accessToken && isAccessTokenExists) {
       getCurrentUserPlaylists(
-        { limit: 20, offset: 10 },
+        { limit: 50, offset: 0 },
         { accessToken },
         setUserPlaylists,
         ({ statusCode }) => {

@@ -169,7 +169,7 @@ const createPlaylist: postAPIRequestFn<createPlaylistAPIIdentifier> = async (
 
 const getCurrentUserPlaylists: getQueryAPIRequestFn<getCurrentUserPlaylistsAPIIdentifier> =
   async (
-    { limit = 10, offset = 0, publicOnly = true },
+    { limit = 50, offset = 0, publicOnly = true },
     { accessToken },
     setPlaylistsFn,
     errorCallback
