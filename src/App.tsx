@@ -16,6 +16,7 @@ import { setDarkTheme } from "redux/actions/app";
 import { createTheme, Theme, ThemeProvider } from "@material-ui/core/styles";
 import PlaylistPage from "pages/Playlist";
 import AlbumPage from "pages/Album";
+import ArtistPage from "pages/Artist";
 import {
   setAccessToken,
   setExpiredTokenTime,
@@ -99,6 +100,13 @@ function App(): React.ReactElement {
     {
       pathname: "/me/albums",
       component: AlbumPage,
+      isPrivate: true,
+      state: null,
+      exact: true,
+    },
+    {
+      pathname: "/me/artists",
+      component: ArtistPage,
       isPrivate: true,
       state: null,
       exact: true,
