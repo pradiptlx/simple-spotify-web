@@ -20,7 +20,7 @@ const AlbumVariant: React.FC<variantType<AlbumObject>> = (props) => {
             />
           </div>
 
-          <div className="absolute bottom-0 bg-black opacity-80 h-1/5 w-full flex flex-col overflow-hidden">
+          <div className="absolute bottom-0 bg-black rounded-b-md opacity-80 h-1/5 w-full flex flex-col overflow-hidden">
             <div className="m-auto">
               <p className="text-md text-white">{item.name}</p>
             </div>

@@ -8,8 +8,37 @@ import { setExpiredTokenTime } from "redux/actions/authorization";
 import { AlbumObject } from "api/interfaces";
 import { getCurrentUserPlaylists, getCurrentUserSavedData } from "api/fetch";
 import Sidebar from "components/Sidebar";
-import Albums from "components/Albums";
 import { setPageData } from "redux/actions/app";
+import CardList from "components/CardList";
+import Box from "@material-ui/core/Box";
+import Skeleton from "@material-ui/lab/Skeleton";
+
+const emptyDataComponent = () => (
+  <>
+    {new Array(10).fill(0).map((_, idx) => (
+      <Box
+        // eslint-disable-next-line react/no-array-index-key
+        key={`box_${idx}`}
+        mt={10}
+        style={{
+          maxWidth: "24rem",
+          overflow: "hidden",
+        }}
+        data-testid="emptyTrackComponent"
+      >
+        <Skeleton
+          variant="rect"
+          animation="pulse"
+          width={600}
+          height="300px"
+          style={{
+            borderRadius: "0.25rem",
+          }}
+        />
+      </Box>
+    ))}
+  </>
+);
 
 const AlbumPage = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -81,7 +110,11 @@ const AlbumPage = (): React.ReactElement => {
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-3xl dark:text-white my-5">My Albums</h1>
           <div className="flex flex-wrap justify-center items-stretch space-x-4">
-            <Albums albums={albums} />
+            <CardList
+              type="albums"
+              cardListItems={albums}
+              emptyDataComponentFn={emptyDataComponent}
+            />
           </div>
         </div>
       </div>
