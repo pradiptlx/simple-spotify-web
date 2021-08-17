@@ -59,7 +59,10 @@ const Sidebar = (): React.ReactElement => {
           </ListSubheader>
           <Divider component="li" variant="inset" />
           <ListItem className={classes.listItem}>
-            <NavLink to="/me/tracks">
+            <NavLink
+              to="/me/tracks"
+              activeClassName="text-green-400 dark:text-green-200"
+            >
               <ListItemText>
                 <LibraryMusicOutlinedIcon /> Tracks
               </ListItemText>
@@ -67,7 +70,10 @@ const Sidebar = (): React.ReactElement => {
           </ListItem>
 
           <ListItem className={classes.listItem}>
-            <NavLink to="/me/albums">
+            <NavLink
+              to="/me/albums"
+              activeClassName="text-green-400 dark:text-green-200"
+            >
               <ListItemText>
                 <AlbumOutlinedIcon /> Albums
               </ListItemText>
@@ -75,7 +81,10 @@ const Sidebar = (): React.ReactElement => {
           </ListItem>
 
           <ListItem className={classes.listItem}>
-            <NavLink to="/me/artists">
+            <NavLink
+              to="/me/artists"
+              activeClassName="text-green-400 dark:text-green-200"
+            >
               <ListItemText>
                 <PeopleAltOutlinedIcon /> Artists
               </ListItemText>
@@ -95,7 +104,10 @@ const Sidebar = (): React.ReactElement => {
               key={`playlist-${playlist.id}`}
               className={classes.playlistItem}
             >
-              <NavLink to={`/playlist/${playlist.id}`}>
+              <NavLink
+                to={`/playlist/${playlist.id}`}
+                activeClassName="text-green-400 dark:text-green-200"
+              >
                 <ListItemText>{playlist.name}</ListItemText>
               </NavLink>
             </ListItem>
