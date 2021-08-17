@@ -72,9 +72,11 @@ const PlaylistPage = (): React.ReactElement => {
   const { accessToken, isAccessTokenExists } = useSelector(
     (state) => state.authorization
   );
+  const { currentUserPlaylists } = useSelector((state) => state.app);
   const [tracks, setTracks] = React.useState<TrackObject[]>([]);
   const [currentPlalist, setCurrentPlaylist] =
     React.useState<Pick<PlaylistObject, "name" | "description" | "id">>();
+
   const errorFetchingHandler = ({ statusCode }: errorArgFn) => {
     if (statusCode === 400 || statusCode === 401) {
       dispatch(
@@ -109,7 +111,7 @@ const PlaylistPage = (): React.ReactElement => {
       errorFetchingHandler
     );
 
-    if (tracks.length === 0) {
+    if (currentUserPlaylists.length === 0) {
       await getCurrentUserPlaylists(
         { limit: 50, offset: 0 },
         { accessToken },
@@ -123,7 +125,7 @@ const PlaylistPage = (): React.ReactElement => {
         errorFetchingHandler
       );
     }
-  }, [accessToken, isAccessTokenExists, playlistId]);
+  }, [accessToken, isAccessTokenExists, playlistId, currentUserPlaylists]);
 
   React.useEffect(() => {
     fetchHandler();
