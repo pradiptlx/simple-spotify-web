@@ -17,6 +17,7 @@ import { createTheme, Theme, ThemeProvider } from "@material-ui/core/styles";
 import PlaylistPage from "pages/Playlist";
 import AlbumPage from "pages/Album";
 import ArtistPage from "pages/Artist";
+import TrackPage from "pages/Track";
 import {
   setAccessToken,
   setExpiredTokenTime,
@@ -107,6 +108,13 @@ function App(): React.ReactElement {
     {
       pathname: "/me/artists",
       component: ArtistPage,
+      isPrivate: true,
+      state: null,
+      exact: true,
+    },
+    {
+      pathname: "/me/tracks",
+      component: TrackPage,
       isPrivate: true,
       state: null,
       exact: true,
