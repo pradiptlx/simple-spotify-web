@@ -3,6 +3,8 @@
 import axios from "axios";
 import qs from "querystring";
 import {
+  ArtistObject,
+  CursorPagingObject,
   PagingObject,
   PlaylistObject,
   PrivateUserObject,
@@ -59,7 +61,7 @@ type getAllFeaturedPlaylistsType = queryParameter & {
 };
 
 type getCurrentUserSavedDataType = queryParameter & {
-  type: "albums" | "tracks" | "episodes";
+  type: "albums" | "tracks" | "following";
 };
 
 // **********************************************
@@ -316,6 +318,7 @@ const getCurrentUserSavedData: getQueryAPIRequestFn<getCurrentUserSavedDataType>
     const query = qs.stringify({
       limit,
       offset,
+      type: type === "following" ? "artist" : "",
     });
 
     try {
@@ -330,15 +333,17 @@ const getCurrentUserSavedData: getQueryAPIRequestFn<getCurrentUserSavedDataType>
       );
 
       if (type === "albums") {
-        const responseObject: PagingObject<SavedAlbumObject> =
-          response.data;
+        const responseObject: PagingObject<SavedAlbumObject> = response.data;
         const albums = responseObject.items.map((item) => item.album);
         setResponseFn(albums);
       } else if (type === "tracks") {
-        const responseObject: PagingObject<SavedTrackObject> =
-          response.data;
+        const responseObject: PagingObject<SavedTrackObject> = response.data;
         const tracks = responseObject.items.map((item) => item.track);
         setResponseFn(tracks);
+      } else if (type === "following") {
+        const responseObject: CursorPagingObject<ArtistObject> = response.data.artists;
+        const artists = responseObject.items.map((item) => item);
+        setResponseFn(artists);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

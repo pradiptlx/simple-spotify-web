@@ -118,3 +118,16 @@ export interface PagingObject<T> {
   previous: string;
   next: string;
 }
+
+export interface CursorPagingObject<T> {
+  items: T[];
+  limit: number;
+  total: number;
+  previous: string;
+  next: string;
+  cursors: CursorObject;
+}
+
+export interface CursorObject {
+  after: string;
+}
