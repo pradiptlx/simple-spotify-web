@@ -102,12 +102,12 @@ export interface AlbumObject {
 
 export interface SavedAlbumObject {
   added_at: Date;
-  albums: AlbumObject[];
+  album: AlbumObject;
 }
 
 export interface SavedTrackObject {
   added_at: Date;
-  tracks: TrackObject[];
+  track: TrackObject;
 }
 
 export interface PagingObject<T> {

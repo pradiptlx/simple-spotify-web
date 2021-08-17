@@ -3,9 +3,11 @@
 import axios from "axios";
 import qs from "querystring";
 import {
+  PagingObject,
   PlaylistObject,
   PrivateUserObject,
   SavedAlbumObject,
+  SavedTrackObject,
   SimplifiedPlaylistObject,
   TrackObject,
 } from "./interfaces";
@@ -291,7 +293,8 @@ const getAllFeaturedPlaylists: getQueryAPIRequestFn<getAllFeaturedPlaylistsType>
           },
         }
       );
-      const responseObject: SimplifiedPlaylistObject[] = response.data.playlists.items;
+      const responseObject: SimplifiedPlaylistObject[] =
+        response.data.playlists.items;
       setResponseFn(responseObject);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -305,7 +308,7 @@ const getAllFeaturedPlaylists: getQueryAPIRequestFn<getAllFeaturedPlaylistsType>
 
 const getCurrentUserSavedData: getQueryAPIRequestFn<getCurrentUserSavedDataType> =
   async (
-    { limit, offset = 0, type },
+    { limit = 50, offset = 0, type },
     { accessToken },
     setResponseFn,
     errorCallback
@@ -326,8 +329,17 @@ const getCurrentUserSavedData: getQueryAPIRequestFn<getCurrentUserSavedDataType>
         }
       );
 
-      const responseObject: SavedAlbumObject = response.data.items;
-      setResponseFn(responseObject);
+      if (type === "albums") {
+        const responseObject: PagingObject<SavedAlbumObject> =
+          response.data;
+        const albums = responseObject.items.map((item) => item.album);
+        setResponseFn(albums);
+      } else if (type === "tracks") {
+        const responseObject: PagingObject<SavedTrackObject> =
+          response.data;
+        const tracks = responseObject.items.map((item) => item.track);
+        setResponseFn(tracks);
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         errorCallback({
