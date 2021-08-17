@@ -5,11 +5,43 @@ import {
 } from "redux/store";
 import { useHistory } from "react-router-dom";
 import { setExpiredTokenTime } from "redux/actions/authorization";
-import Playlists from "components/Playlists";
 import { getCurrentUserPlaylists, getAllFeaturedPlaylists } from "api/fetch";
 import { SimplifiedPlaylistObject } from "api/interfaces";
 import Sidebar from "components/Sidebar";
 import { setPageData } from "redux/actions/app";
+import CardList from "components/CardList";
+import Box from "@material-ui/core/Box";
+import Skeleton from "@material-ui/lab/Skeleton";
+
+const emptyDataComponent = () => (
+  <>
+    {new Array(10).fill(0).map((_, idx) => (
+      <Box
+        // eslint-disable-next-line react/no-array-index-key
+        key={`box_${idx}`}
+        mt={10}
+        style={{
+          maxWidth: "24rem",
+          overflow: "hidden",
+        }}
+      >
+        <Skeleton
+          variant="rect"
+          animation="wave"
+          width={600}
+          height="300px"
+          style={{
+            borderRadius: "0.25rem",
+          }}
+        />
+        <Box py={4} px={6}>
+          <Skeleton variant="text" />
+          <Skeleton variant="text" />
+        </Box>
+      </Box>
+    ))}
+  </>
+);
 
 function Home(): React.ReactElement {
   const dispatch = useDispatch();
@@ -80,7 +112,11 @@ function Home(): React.ReactElement {
             id="playlists"
             className="flex flex-wrap justify-center items-stretch space-x-4"
           >
-            <Playlists playlists={featuredPlaylists} />
+            <CardList
+              type="playlists"
+              cardListItems={featuredPlaylists}
+              emptyDataComponentFn={emptyDataComponent}
+            />
           </div>
         </div>
       </div>
