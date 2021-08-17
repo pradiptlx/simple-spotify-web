@@ -6,14 +6,17 @@ import {
 } from "redux/store";
 import { setExpiredTokenTime } from "redux/actions/authorization";
 import { AlbumObject } from "api/interfaces";
-import { getCurrentUserSavedData } from "api/fetch";
+import { getCurrentUserPlaylists, getCurrentUserSavedData } from "api/fetch";
 import Sidebar from "components/Sidebar";
 import Albums from "components/Albums";
+import { setPageData } from "redux/actions/app";
 
 const AlbumPage = (): React.ReactElement => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { accessToken, isAccessTokenExists } = useSelector((state) => state.authorization);
+  const { accessToken, isAccessTokenExists } = useSelector(
+    (state) => state.authorization
+  );
 
   const [albums, setAlbums] = React.useState<AlbumObject[]>([]);
 
@@ -35,14 +38,37 @@ const AlbumPage = (): React.ReactElement => {
         }
       }
     );
+
+    await getCurrentUserPlaylists(
+      { limit: 50, offset: 0 },
+      { accessToken },
+      (responseData) => {
+        dispatch(
+          setPageData({
+            currentUserPlaylists: responseData,
+          })
+        );
+      },
+      ({ statusCode }) => {
+        if (statusCode === 400 || statusCode === 401) {
+          dispatch(
+            setExpiredTokenTime({
+              expiredTokenTime: 0,
+              isTokenExpired: true,
+            })
+          );
+          history.replace("/login");
+        }
+      }
+    );
   }, [accessToken, isAccessTokenExists]);
 
   React.useEffect(() => {
     fetchHandler();
 
     return () => {
-        setAlbums([])
-    }
+      setAlbums([]);
+    };
   }, [fetchHandler]);
 
   return (

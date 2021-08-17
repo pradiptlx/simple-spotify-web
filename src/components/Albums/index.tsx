@@ -23,54 +23,31 @@ const emptyDataComponent = () =>
     >
       <Skeleton
         variant="rect"
-        animation="wave"
+        animation="pulse"
         width={600}
         height="300px"
         style={{
           borderRadius: "0.25rem",
         }}
       />
-      <Box
-        py={2}
-        px={4}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: ".25rem",
-        }}
-      >
-        <Skeleton
-          variant="text"
-          style={{
-            width: "300px",
-          }}
-        />
-        <Skeleton
-          variant="text"
-          style={{
-            width: "300px",
-          }}
-        />
-        <Skeleton
-          variant="circle"
-          style={{
-            borderRadius: "9999px",
-            padding: "1 10",
-            margin: "5 auto",
-            width: "120px",
-            height: "42px",
-          }}
-        />
-      </Box>
     </Box>
   ));
 
 const Albums: React.FC<albumsType> = (props) => {
   const { albums } = props;
 
-  return albums.length ? (
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [isLoading]);
+
+  return albums.length && !isLoading ? (
     <>
       {albums.map((album, idx) => (
         // eslint-disable-next-line react/no-array-index-key
