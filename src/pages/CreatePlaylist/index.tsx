@@ -4,19 +4,17 @@ import {
   useAppSelector as useSelector,
 } from "redux/store";
 import Collapse from "@material-ui/core/Collapse";
-import Searchbar from "../../components/Searchbar";
-import Tracks from "../../components/Tracks";
-import Alert from "../../components/Alert";
 import {
   fetchCurrentUserProfile,
   searchSpotify,
   // getPlaylist,
   createPlaylist,
   addTrackToPlaylist,
-  TrackObject,
-  PrivateUserObject,
-  PlaylistObject,
-} from "../../api/fetch";
+} from "api/fetch";
+import { TrackObject, PrivateUserObject, PlaylistObject } from "api/interfaces";
+import Searchbar from "../../components/Searchbar";
+import Tracks from "../../components/Tracks";
+import Alert from "../../components/Alert";
 import PlaylistForm from "../../components/Playlists/Form";
 import { setExpiredTokenTime } from "../../redux/actions/authorization";
 

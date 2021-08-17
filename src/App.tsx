@@ -12,6 +12,12 @@ import {
   Redirect,
   RouteComponentProps,
 } from "react-router-dom";
+import { setDarkTheme } from "redux/actions/app";
+import { createTheme, Theme, ThemeProvider } from "@material-ui/core/styles";
+import PlaylistPage from "pages/Playlist";
+import AlbumPage from "pages/Album";
+import ArtistPage from "pages/Artist";
+import TrackPage from "pages/Track";
 import {
   setAccessToken,
   setExpiredTokenTime,
@@ -67,6 +73,7 @@ function App(): React.ReactElement {
   const { isLogin, isTokenExpired, isAccessTokenExists, accessToken } =
     useSelector((state) => state.authorization);
   const currentUser = useSelector((state) => state.user);
+  const { darkTheme } = useSelector((state) => state.app);
   const [isFirstMounted, setIsFirstMounted] = React.useState(true);
 
   const routes = [
@@ -75,21 +82,75 @@ function App(): React.ReactElement {
       component: Home,
       isPrivate: true,
       state: null,
+      exact: true,
     },
     {
       pathname: "/create-playlist",
       component: CreatePlaylist,
       isPrivate: true,
       state: null,
+      exact: true,
+    },
+    {
+      pathname: "/playlist/:playlistId",
+      component: PlaylistPage,
+      isPrivate: true,
+      state: null,
+      exact: true,
+    },
+    {
+      pathname: "/me/albums",
+      component: AlbumPage,
+      isPrivate: true,
+      state: null,
+      exact: true,
+    },
+    {
+      pathname: "/me/artists",
+      component: ArtistPage,
+      isPrivate: true,
+      state: null,
+      exact: true,
+    },
+    {
+      pathname: "/me/tracks",
+      component: TrackPage,
+      isPrivate: true,
+      state: null,
+      exact: true,
     },
   ];
 
   // When isLogin state is initialized, its state is false so handle with isFirstMounted to prevent redirecting to Login component each refresh
   React.useEffect(() => {
+    const isDarkThemeExists = Boolean(localStorage.getItem("darkTheme"));
     if (isFirstMounted) {
       setIsFirstMounted(false);
+      if (
+        isDarkThemeExists ||
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        document.documentElement.classList.add("dark");
+        dispatch(setDarkTheme(true));
+      }
     }
   }, []);
+
+  const changeDomThemeHandler = React.useCallback(() => {
+    // Manual Dark Theme Mode
+    const isDarkThemeExists = Boolean(localStorage.getItem("darkTheme"));
+    if (darkTheme) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("darkTheme", "true");
+    } else if (!darkTheme && isDarkThemeExists && !isFirstMounted) {
+      document.documentElement.classList.remove("dark");
+      localStorage.removeItem("darkTheme");
+    }
+  }, [darkTheme, isFirstMounted]);
+
+  React.useEffect(() => {
+    changeDomThemeHandler();
+  }, [changeDomThemeHandler]);
 
   // Parsing access token from local storage or from URL callback
   React.useEffect(() => {
@@ -166,8 +227,18 @@ function App(): React.ReactElement {
     }
   }, [accessToken, isTokenExpired, isAccessTokenExists, currentUser.id]);
 
+  const materialComponentsTheme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          type: darkTheme ? "dark" : "light",
+        },
+      }),
+    [darkTheme]
+  );
+
   return (
-    <>
+    <ThemeProvider<Theme> theme={materialComponentsTheme}>
       <BrowserRouter>
         <Navbar />
         <Switch>
@@ -179,7 +250,7 @@ function App(): React.ReactElement {
               return (
                 <PrivateRoute
                   key={`private_${route.pathname}`}
-                  exact // TODO: Change exact behaviour
+                  exact={route.exact}
                   path={route.pathname}
                   isPrivate
                   isLogin={isLogin || isFirstMounted}
@@ -190,7 +261,7 @@ function App(): React.ReactElement {
             return (
               <Route
                 key={`public_${route.pathname}`}
-                exact
+                exact={route.exact}
                 path={route.pathname}
                 component={route.component}
               />
@@ -198,7 +269,7 @@ function App(): React.ReactElement {
           })}
         </Switch>
       </BrowserRouter>
-    </>
+    </ThemeProvider>
   );
 }
 

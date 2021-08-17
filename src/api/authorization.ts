@@ -16,7 +16,8 @@ const getAuthorizedToken = async ({
     client_id: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
     response_type: "token",
     redirect_uri: `${process.env.REACT_APP_URL}login/`,
-    scope: "playlist-modify-private",
+    scope:
+      "playlist-modify-private,user-library-read,user-follow-modify,user-follow-read",
     state: 123,
   });
   axios

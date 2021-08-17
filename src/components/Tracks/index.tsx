@@ -2,7 +2,7 @@
 import React from "react";
 // import Mock from "../../data";
 import { selectedTrackIdentifier } from "pages/CreatePlaylist";
-import { TrackObject } from "api/fetch";
+import { TrackObject } from "api/interfaces";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
 import AlbumArt from "../AlbumArt";
@@ -10,7 +10,7 @@ import TrackInfo from "../TrackTitle";
 
 type tracksProps = {
   trackData: TrackObject[];
-  selectedTrackFn: React.Dispatch<
+  selectedTrackFn?: React.Dispatch<
     React.SetStateAction<selectedTrackIdentifier>
   >;
 };
@@ -27,7 +27,9 @@ const Tracks: React.FC<tracksProps> = (props) => {
       [idTrack]: { active: !selectedTrack[idTrack]?.active, uri: uriTrack },
     };
     setSelectedTrack(newTracks);
-    selectedTrackFn(newTracks);
+    if (selectedTrackFn) {
+      selectedTrackFn(newTracks);
+    }
   };
 
   React.useEffect(() => {
@@ -98,14 +100,15 @@ const Tracks: React.FC<tracksProps> = (props) => {
 
   return trackData.length && !isLoading ? (
     <>
-      {trackData.map((data) => (
+      {trackData.map((data, idx) => (
         <div
           className={`tracks flex-shrink-0 rounded-lg shadow-lg text-center mt-10 dark:bg-gray-700 ${
             !selectedTrack[data.id]?.active
               ? "transition duration-500 ease-in-out hover:bg-gray-200 dark:hover:bg-gray-900 transform hover:-translate-y-2 hover:scale-105"
               : ""
           }`}
-          key={data.uri}
+          // eslint-disable-next-line react/no-array-index-key
+          key={`${data.uri}_${idx}`}
           onClick={() => {
             trackOnClickHandler(data.id, data.uri);
           }}

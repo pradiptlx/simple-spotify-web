@@ -1,0 +1,41 @@
+.btnToggle {
+  border: 2px solid;
+  border-radius: 30px;
+  cursor: pointer;
+  display: flex;
+  font-size: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 0.5rem;
+  position: relative;
+  width: 50%;
+  height: 100%;
+}
+
+.lightThemeSun {
+  height: 1.2rem;
+  width: 1.5rem;
+  transition: all 0.3s linear;
+  transform: translateY(0);
+}
+.lightThemeMoon {
+  height: 1.2rem;
+  width: 1.5rem;
+  transition: all 0.3s linear;
+  transform: translateY(-100px);
+}
+
+.darkThemeSun {
+  height: 1.2rem;
+  width: 1.5rem;
+  transition: all 0.3s linear;
+  transform: translateY(100px);
+}
+.darkThemeMoon {
+  height: 1.2rem;
+  width: 1.5rem;
+  transition: all 0.3s linear;
+  transform: translateY(0);
+}
