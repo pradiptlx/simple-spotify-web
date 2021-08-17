@@ -120,7 +120,7 @@ function App(): React.ReactElement {
     }
   }, []);
 
-  React.useEffect(() => {
+  const changeDomThemeHandler = React.useCallback(() => {
     // Manual Dark Theme Mode
     const isDarkThemeExists = Boolean(localStorage.getItem("darkTheme"));
     if (darkTheme) {
@@ -131,6 +131,10 @@ function App(): React.ReactElement {
       localStorage.removeItem("darkTheme");
     }
   }, [darkTheme, isFirstMounted]);
+
+  React.useEffect(() => {
+    changeDomThemeHandler();
+  }, [changeDomThemeHandler]);
 
   // Parsing access token from local storage or from URL callback
   React.useEffect(() => {
