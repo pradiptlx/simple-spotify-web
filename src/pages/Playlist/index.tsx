@@ -6,7 +6,6 @@ import {
 } from "redux/store";
 import { useParams, useHistory } from "react-router-dom";
 import Sidebar from "components/Sidebar";
-import Tracks from "components/Tracks";
 import { PlaylistObject, TrackObject } from "api/interfaces";
 import { errorArgFn, getCurrentUserPlaylists, getPlaylist } from "api/fetch";
 import { setExpiredTokenTime } from "redux/actions/authorization";
@@ -101,7 +100,7 @@ const PlaylistPage = (): React.ReactElement => {
     setTracks(playlistTracks);
   };
 
-  const fetchTracksHandler = React.useCallback(async () => {
+  const fetchHandler = React.useCallback(async () => {
     if (!accessToken || !isAccessTokenExists) return;
     await getPlaylist(
       { playlistId },
@@ -109,40 +108,30 @@ const PlaylistPage = (): React.ReactElement => {
       setPlaylistTracksHandler,
       errorFetchingHandler
     );
+
+    if (tracks.length === 0) {
+      await getCurrentUserPlaylists(
+        { limit: 50, offset: 0 },
+        { accessToken },
+        (responseData) => {
+          dispatch(
+            setPageData({
+              currentUserPlaylists: responseData,
+            })
+          );
+        },
+        errorFetchingHandler
+      );
+    }
   }, [accessToken, isAccessTokenExists, playlistId]);
 
   React.useEffect(() => {
-    getCurrentUserPlaylists(
-      { limit: 50, offset: 0 },
-      { accessToken },
-      (responseData) => {
-        dispatch(
-          setPageData({
-            currentUserPlaylists: responseData,
-          })
-        );
-      },
-      ({ statusCode }) => {
-        if (statusCode === 400 || statusCode === 401) {
-          dispatch(
-            setExpiredTokenTime({
-              expiredTokenTime: 0,
-              isTokenExpired: true,
-            })
-          );
-          history.replace("/login");
-        }
-      }
-    );
-  }, []);
-
-  React.useEffect(() => {
-    fetchTracksHandler();
+    fetchHandler();
 
     return () => {
       setTracks([]);
     };
-  }, [fetchTracksHandler]);
+  }, [fetchHandler]);
 
   return (
     <div className="bg-white dark:bg-gray-800 min-h-screen">
