@@ -7,7 +7,7 @@ const AlbumVariant: React.FC<variantType<AlbumObject>> = (props) => {
   const { items } = props;
 
   return (
-    <>
+    <div className="flex flex-wrap justify-center items-stretch space-x-4">
       {items.map((item) => (
         <div
           className="relative flex-shrink-0 rounded-lg shadow-lg text-center mt-10 dark:bg-gray-700"
@@ -30,7 +30,7 @@ const AlbumVariant: React.FC<variantType<AlbumObject>> = (props) => {
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

@@ -14,7 +14,7 @@ import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
 
 const emptyDataComponent = () => (
-  <>
+  <div className="flex flex-wrap justify-center items-stretch space-x-4">
     {new Array(10).fill(0).map((_, idx) => (
       <Box
         // eslint-disable-next-line react/no-array-index-key
@@ -40,7 +40,7 @@ const emptyDataComponent = () => (
         </Box>
       </Box>
     ))}
-  </>
+  </div>
 );
 
 function Home(): React.ReactElement {
@@ -108,16 +108,11 @@ function Home(): React.ReactElement {
 
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-3xl dark:text-white my-5">Trending Now.</h1>
-          <div
-            id="playlists"
-            className="flex flex-wrap justify-center items-stretch space-x-4"
-          >
-            <CardList
-              type="playlists"
-              cardListItems={featuredPlaylists}
-              emptyDataComponentFn={emptyDataComponent}
-            />
-          </div>
+          <CardList
+            type="playlists"
+            cardListItems={featuredPlaylists}
+            emptyDataComponentFn={emptyDataComponent}
+          />
         </div>
       </div>
     </div>

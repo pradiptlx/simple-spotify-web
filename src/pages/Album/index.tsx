@@ -109,13 +109,11 @@ const AlbumPage = (): React.ReactElement => {
 
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-3xl dark:text-white my-5">My Albums</h1>
-          <div className="flex flex-wrap justify-center items-stretch space-x-4">
-            <CardList
-              type="albums"
-              cardListItems={albums}
-              emptyDataComponentFn={emptyDataComponent}
-            />
-          </div>
+          <CardList
+            type="albums"
+            cardListItems={albums}
+            emptyDataComponentFn={emptyDataComponent}
+          />
         </div>
       </div>
     </div>
