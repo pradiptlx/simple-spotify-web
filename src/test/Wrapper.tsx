@@ -5,20 +5,43 @@ import {
   RenderResult,
 } from "@testing-library/react";
 import { Provider } from "react-redux";
-import store from "redux/store";
 import { Router } from "react-router";
 import { createMemoryHistory, MemoryHistory } from "history";
+import { combineReducers, createStore, Store } from "@reduxjs/toolkit";
+import {
+  applicationReducer,
+  initialApplicationState,
+} from "redux/reducers/app";
+import {
+  authorizationReducer,
+  initialAuthorizationState,
+} from "redux/reducers/authorization";
+import { initialUserState, userReducer } from "redux/reducers/user";
 
 type renderWrapperProps = (
   component: React.ReactElement,
   options: Omit<RenderOptions, "wrapper"> & {
-    route: string;
+    route?: string;
+    store?: Store;
   }
 ) => { history: MemoryHistory; rendered: RenderResult };
 
+const defaultStore = createStore(
+  combineReducers({
+    authorization: authorizationReducer,
+    user: userReducer,
+    app: applicationReducer,
+  }),
+  {
+    app: { ...initialApplicationState },
+    authorization: { ...initialAuthorizationState },
+    user: { ...initialUserState },
+  }
+);
+
 const RenderWithWrapper: renderWrapperProps = (
   component,
-  { route = "/", ...options }
+  { route = "/", store = defaultStore, ...options }
 ) => {
   const history = createMemoryHistory({ initialEntries: [route] });
   const Wrapper: React.FC = ({ children }) => (
