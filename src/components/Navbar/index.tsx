@@ -76,6 +76,7 @@ const Navbar = (): React.ReactElement => {
             exact
             className={styles.homeNav}
             activeClassName="bg-gray-900"
+            data-testid="homeNavLink"
           >
             <p className="text-white block px-3 py-2 rounded-md text-base font-medium">
               Home
@@ -87,6 +88,7 @@ const Navbar = (): React.ReactElement => {
             exact
             className={styles.createPlaylistNav}
             activeClassName="bg-gray-900"
+            data-testid="createPlaylistNavLink"
           >
             <p className="text-white block px-3 py-2 rounded-md text-base font-medium">
               Create Playlist
@@ -107,6 +109,7 @@ const Navbar = (): React.ReactElement => {
                   onClick={handleClickAvatar}
                   ref={anchorRef}
                   role="presentation"
+                  data-testid="profilePictureUser"
                 />
                 <Popper
                   open={profileMenuOpen}
