@@ -100,11 +100,13 @@ const Navbar = (): React.ReactElement => {
           </div>
 
           <div className={styles.loginNav}>
-            {userProfile.id && userProfile.imageUrl && (
+            {userProfile.id && (
               <>
                 <img
                   className="h-8 w-8 rounded-full"
-                  src={userProfile.imageUrl}
+                  src={
+                    userProfile.images.length ? userProfile.images[0].url : ""
+                  }
                   alt={userProfile.id}
                   onClick={handleClickAvatar}
                   ref={anchorRef}
@@ -139,7 +141,7 @@ const Navbar = (): React.ReactElement => {
                           >
                             <MenuItem onClick={handleCloseMenuAvater}>
                               <a
-                                href={userProfile.spotifyUrl}
+                                href={userProfile.external_urls.spotify}
                                 className="block px-4 py-2 text-sm text-gray-700"
                                 id="user-menu-item-0"
                                 target="_blank"
@@ -207,28 +209,32 @@ const Navbar = (): React.ReactElement => {
           </div>
         </NavLink>
 
-        {userProfile.id && userProfile.imageUrl && (
-          <div
-            className="flex items-center ml-2"
-            onClick={() => {
-              window.open(userProfile.spotifyUrl, "blank_");
-            }}
-            role="presentation"
-          >
-            <img
-              className="h-6 w-6 rounded-full"
-              src={userProfile.imageUrl}
-              alt={userProfile.id}
-              onClick={() => {
-                setProfileMenuOpen(!profileMenuOpen);
-              }}
-              role="presentation"
-            />
-            <p className=" text-white block px-3 py-4 rounded-md text-base font-medium">
-              {userProfile.displayName}
-            </p>
-          </div>
-        )}
+        {userProfile.id && userProfile.images
+          ? userProfile.images[0].url
+          : "" && (
+              <div
+                className="flex items-center ml-2"
+                onClick={() => {
+                  window.open(userProfile.external_urls.spotify, "blank_");
+                }}
+                role="presentation"
+              >
+                <img
+                  className="h-6 w-6 rounded-full"
+                  src={
+                    userProfile.images.length ? userProfile.images[0].url : ""
+                  }
+                  alt={userProfile.id}
+                  onClick={() => {
+                    setProfileMenuOpen(!profileMenuOpen);
+                  }}
+                  role="presentation"
+                />
+                <p className=" text-white block px-3 py-4 rounded-md text-base font-medium">
+                  {userProfile.display_name}
+                </p>
+              </div>
+            )}
       </div>
     </nav>
   );

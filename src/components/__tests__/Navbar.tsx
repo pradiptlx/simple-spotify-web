@@ -3,7 +3,7 @@ import Navbar from "components/Navbar";
 import userEvent from "@testing-library/user-event";
 import { render } from "test/Wrapper";
 import { combineReducers, createStore, Store } from "@reduxjs/toolkit";
-import { SimplifiedPlaylistObject } from "api/interfaces";
+import { ImageObject, SimplifiedPlaylistObject } from "api/interfaces";
 import { applicationReducer } from "redux/reducers/app";
 import { authorizationReducer } from "redux/reducers/authorization";
 import { userReducer } from "redux/reducers/user";
@@ -81,10 +81,13 @@ it("profile picture is exists after get accessToken", async () => {
     isLogin: true,
   };
   const initialUserState = {
-    id: "id01",
-    displayName: "User 1",
-    imageUrl: "#",
-    spotifyUrl: "#",
+    id: "user01",
+    display_name: "user01",
+    images: [{ url: "#", height: null, width: null }] as ImageObject[],
+    external_urls: { spotify: "#" },
+    country: "ID",
+    followers: { href: "#", total: 0 },
+    email: "test@email.com",
   };
   const initialApplicationState = {
     darkTheme: false,
@@ -95,7 +98,7 @@ it("profile picture is exists after get accessToken", async () => {
     authorization: initialAuthorizationState,
     app: initialApplicationState,
   };
-  const { findByTestId, findByText, queryByTestId } = renderNavbar({
+  const { findByTestId, queryByTestId } = renderNavbar({
     route: "/login",
   });
   const profilePicture = queryByTestId("profilePictureUser");
@@ -105,7 +108,5 @@ it("profile picture is exists after get accessToken", async () => {
     initialStore,
   });
   const profilePictureLogin = await findByTestId("profilePictureUser");
-  const usernameDisplay = await findByText(initialUserState.displayName);
   expect(profilePictureLogin).toBeInTheDocument();
-  expect(usernameDisplay).toHaveTextContent(initialUserState.displayName);
 });
