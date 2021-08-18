@@ -10,7 +10,6 @@ module.exports = {
     "\\.css$": require.resolve("./src/test/style-mock.js"),
   },
   watchPlugins: [
-    "jest-runner-eslint/watch-fix",
     "jest-watch-typeahead/filename",
     "jest-watch-typeahead/testname",
     "jest-watch-select-projects",

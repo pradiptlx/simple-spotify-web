@@ -5,13 +5,11 @@ import {
 } from "redux/store";
 import Collapse from "@material-ui/core/Collapse";
 import {
-  fetchCurrentUserProfile,
   searchSpotify,
-  // getPlaylist,
   createPlaylist,
   addTrackToPlaylist,
 } from "api/fetch";
-import { TrackObject, PrivateUserObject, PlaylistObject } from "api/interfaces";
+import { TrackObject, PlaylistObject } from "api/interfaces";
 import Searchbar from "../../components/Searchbar";
 import Tracks from "../../components/Tracks";
 import Alert from "../../components/Alert";
@@ -38,14 +36,11 @@ function CreatePlaylist(): React.ReactElement {
   const [countSelectedTrack, setCountSelectedTrack] = React.useState(0);
   const [searchValue, setSearchValue] = React.useState("");
 
-  const { accessToken, isAccessTokenExists, isTokenExpired } = useSelector(
+  const { accessToken } = useSelector(
     (state) => state.authorization
   );
 
   const userProfile = useSelector((state) => state.user);
-
-  // const [userProfile, setUserProfile] =
-  //   React.useState<Partial<PrivateUserObject>>();
   const [currentPlaylist, setCurrentPlaylist] =
     React.useState<PlaylistObject>();
   const [playlistValue, setPlaylistValue] =
@@ -123,30 +118,6 @@ function CreatePlaylist(): React.ReactElement {
       alert("Minimal Title 10 Kata & Description 20 Kata");
     }
   };
-
-  // React.useEffect(() => {
-  //   if (
-  //     userProfile &&
-  //     (Object.keys(userProfile).length === 0 || isTokenExpired) &&
-  //     isAccessTokenExists
-  //   ) {
-  //     fetchCurrentUserProfile(
-  //       { accessToken },
-  //       setUserProfile,
-  //       ({ statusCode }) => {
-  //         if (statusCode === 400 || statusCode === 401) {
-  //           // setIsTokenExpired(true);
-  //           dispatch(
-  //             setExpiredTokenTime({
-  //               expiredTokenTime: 0,
-  //               isTokenExpired: true,
-  //             })
-  //           );
-  //         }
-  //       }
-  //     );
-  //   }
-  // }, [accessToken, isTokenExpired, isAccessTokenExists]);
 
   React.useEffect(() => {
     if (

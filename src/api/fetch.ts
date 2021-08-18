@@ -7,7 +7,6 @@ import {
   CursorPagingObject,
   PagingObject,
   PlaylistObject,
-  PrivateUserObject,
   SavedAlbumObject,
   SavedTrackObject,
   SimplifiedPlaylistObject,
@@ -50,10 +49,6 @@ type createPlaylistAPIIdentifier = {
   desc?: string;
   isPublic: boolean;
   collaborative: boolean;
-};
-
-type getCurrentUserPlaylistsAPIIdentifier = queryParameter & {
-  publicOnly?: boolean;
 };
 
 type getAllFeaturedPlaylistsType = queryParameter & {
