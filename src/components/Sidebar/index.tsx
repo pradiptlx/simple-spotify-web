@@ -55,20 +55,22 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const emptyDataComponent = () => (
-  <>
+  <div data-testid="emptySkeleton">
     {new Array(20).fill(0).map((item, idx) => (
       <Box
+        key={`playlist_${idx}`}
         style={{
           paddingBottom: 0,
           paddingTop: 0,
           margin: ".2rem auto",
           width: "15rem",
         }}
+        data-testid="emptySkeletonItem"
       >
         <Skeleton key={`skeleton_${idx}`} variant="text" />
       </Box>
     ))}
-  </>
+  </div>
 );
 
 const Sidebar = (): React.ReactElement => {
