@@ -169,38 +169,6 @@ const createPlaylist: postAPIRequestFn<createPlaylistAPIIdentifier> = async (
     });
 };
 
-const getCurrentUserPlaylists: getQueryAPIRequestFn<getCurrentUserPlaylistsAPIIdentifier> =
-  async (
-    { limit = 50, offset = 0, publicOnly = true },
-    { accessToken },
-    setPlaylistsFn,
-    errorCallback
-  ): Promise<void> => {
-    axios
-      .get(
-        `${process.env.REACT_APP_SPOTIFY_API_URL}/me/playlists?limit=${limit}&offset=${offset}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      )
-      .then((response) => {
-        if (response.data && response.data?.items) {
-          const publicPlaylists: SimplifiedPlaylistObject[] = publicOnly
-            ? response.data.items.filter(
-                (data: SimplifiedPlaylistObject) => data.public
-              )
-            : response.data.items;
-          setPlaylistsFn(publicPlaylists);
-        }
-      })
-      .catch((error) => {
-        const statusCode = error.response?.status;
-        errorCallback({ error, statusCode });
-      });
-  };
-
 const getPlaylist: getQueryAPIRequestFn<pathParameter> = async (
   { playlistId },
   { accessToken },
@@ -356,7 +324,6 @@ export {
   createPlaylist,
   getPlaylist,
   addTrackToPlaylist,
-  getCurrentUserPlaylists,
   getAllFeaturedPlaylists,
   getCurrentUserSavedData,
 };

@@ -5,10 +5,9 @@ import {
 } from "redux/store";
 import { useHistory } from "react-router-dom";
 import { setExpiredTokenTime } from "redux/actions/authorization";
-import { getCurrentUserPlaylists, getAllFeaturedPlaylists } from "api/fetch";
+import { getAllFeaturedPlaylists } from "api/fetch";
 import { SimplifiedPlaylistObject } from "api/interfaces";
 import Sidebar from "components/Sidebar";
-import { setPageData } from "redux/actions/app";
 import CardList from "components/CardList";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";

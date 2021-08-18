@@ -7,9 +7,8 @@ import {
 import { useParams, useHistory } from "react-router-dom";
 import Sidebar from "components/Sidebar";
 import { PlaylistObject, TrackObject } from "api/interfaces";
-import { errorArgFn, getCurrentUserPlaylists, getPlaylist } from "api/fetch";
+import { errorArgFn, getPlaylist } from "api/fetch";
 import { setExpiredTokenTime } from "redux/actions/authorization";
-import { setPageData } from "redux/actions/app";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
 import CardList from "components/CardList";

@@ -1,12 +1,7 @@
 import React from "react";
-import {
-  errorArgFn,
-  getCurrentUserPlaylists,
-  getCurrentUserSavedData,
-} from "api/fetch";
+import { errorArgFn, getCurrentUserSavedData } from "api/fetch";
 import Sidebar from "components/Sidebar";
 import { useHistory } from "react-router-dom";
-import { setPageData } from "redux/actions/app";
 import { setExpiredTokenTime } from "redux/actions/authorization";
 import {
   useAppDispatch as useDispatch,
