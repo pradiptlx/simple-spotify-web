@@ -130,18 +130,7 @@ const fetchCurrentUserProfile: getAPIRequestFn = (
     })
     .then((response) => {
       if (response.data) {
-        const {
-          display_name,
-          id,
-          images,
-          external_urls,
-        }: Partial<PrivateUserObject> = response.data;
-        setUserProfileFn({
-          id,
-          displayName: display_name,
-          imageUrl: images ? images[0].url : "",
-          spotifyUrl: external_urls?.spotify,
-        } as PrivateUserObject);
+        setUserProfileFn(response.data);
       }
     })
     .catch((error) => {

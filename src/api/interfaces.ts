@@ -37,15 +37,27 @@ export interface TrackObject {
   uri: string;
 }
 
+export interface FollowersObject {
+  href: string;
+  total: number;
+}
+
 export interface PrivateUserObject {
   display_name: string;
   email: string;
   id: string;
   images: ImageObject[];
   external_urls: ExternalUrlObject;
-  displayName: string;
-  spotifyUrl: string;
-  imageUrl: string;
+  country: string;
+  followers: FollowersObject;
+}
+
+export interface PublicUserObject {
+  display_name: string;
+  id: string;
+  images: ImageObject[];
+  external_urls: ExternalUrlObject;
+  followers: FollowersObject;
 }
 export interface PlaylistObject {
   id: string;
@@ -81,7 +93,7 @@ export interface SimplifiedPlaylistObject {
   images: ImageObject[];
   name: string;
   public: boolean;
-  tracks: PlaylistTracksRefObject[];
+  tracks: PlaylistTracksRefObject;
 }
 
 export interface AlbumObject {
