@@ -26,7 +26,7 @@ type renderWrapperProps = (
   }
 ) => { history: MemoryHistory; rendered: RenderResult };
 
-const defaultStore = createStore(
+export const defaultStoreTest = createStore(
   combineReducers({
     authorization: authorizationReducer,
     user: userReducer,
@@ -41,7 +41,7 @@ const defaultStore = createStore(
 
 const RenderWithWrapper: renderWrapperProps = (
   component,
-  { route = "/", store = defaultStore, ...options }
+  { route = "/", store = defaultStoreTest, ...options }
 ) => {
   const history = createMemoryHistory({ initialEntries: [route] });
   const Wrapper: React.FC = ({ children }) => (
