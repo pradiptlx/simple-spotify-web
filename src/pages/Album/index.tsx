@@ -14,7 +14,7 @@ import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
 
 const emptyDataComponent = () => (
-  <>
+  <div className="flex flex-wrap justify-center items-stretch space-x-4">
     {new Array(10).fill(0).map((_, idx) => (
       <Box
         // eslint-disable-next-line react/no-array-index-key
@@ -37,7 +37,7 @@ const emptyDataComponent = () => (
         />
       </Box>
     ))}
-  </>
+  </div>
 );
 
 const AlbumPage = (): React.ReactElement => {
