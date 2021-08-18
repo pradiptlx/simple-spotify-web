@@ -8,7 +8,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import AlbumArt from "../AlbumArt";
 import TrackInfo from "../TrackTitle";
 
-type tracksProps = {
+export type tracksProps = {
   trackData: TrackObject[];
   selectedTrackFn?: React.Dispatch<
     React.SetStateAction<selectedTrackIdentifier>
