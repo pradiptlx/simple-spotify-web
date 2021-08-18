@@ -1,8 +1,9 @@
 const path = require("path");
 
 module.exports = {
-  rootDir: path.join(__dirname, ".."),
   displayName: "lint",
+  rootDir: path.join(__dirname, "../.."),
+  moduleDirectories: ["node_modules", path.join(__dirname, ".."), __dirname],
   runner: "jest-runner-eslint",
   testMatch: ["<rootDir>/**/*.+(ts|tsx)"],
 };
