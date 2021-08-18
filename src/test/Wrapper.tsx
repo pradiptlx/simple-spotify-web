@@ -1,12 +1,12 @@
 import React from "react";
 import {
-  render as rtl,
+  render as rtlRender,
   RenderOptions,
   RenderResult,
 } from "@testing-library/react";
 import { Provider } from "react-redux";
 import store from "redux/store";
-import { Router } from "react-router-dom";
+import { Router } from "react-router";
 import { createMemoryHistory } from "history";
 
 type renderWrapperProps = (
@@ -27,7 +27,7 @@ const RenderWithWrapper: renderWrapperProps = (
     </Provider>
   );
 
-  return rtl(component, { wrapper: Wrapper, ...options });
+  return rtlRender(component, { wrapper: Wrapper, ...options });
 };
 
 export * from "@testing-library/react";
