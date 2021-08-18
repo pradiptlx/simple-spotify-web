@@ -60,4 +60,4 @@ const authorizationReducer = createReducer(
 );
 
 // eslint-disable-next-line import/prefer-default-export
-export { authorizationReducer };
+export { authorizationReducer, initialAuthorizationState };

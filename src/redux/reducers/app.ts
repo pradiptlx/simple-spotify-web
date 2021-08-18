@@ -22,4 +22,4 @@ const applicationReducer = createReducer(initialApplicationState, (builder) => {
   );
 });
 
-export default applicationReducer;
+export { applicationReducer, initialApplicationState };
