@@ -8,14 +8,9 @@ import Sidebar from "components/Sidebar";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { ArtistObject } from "api/interfaces";
-import {
-  errorArgFn,
-  getCurrentUserPlaylists,
-  getCurrentUserSavedData,
-} from "api/fetch";
+import { errorArgFn, getCurrentUserSavedData } from "api/fetch";
 import { setExpiredTokenTime } from "redux/actions/authorization";
 import { useHistory } from "react-router-dom";
-import { setPageData } from "redux/actions/app";
 
 const emptyDataComponent = () => (
   <div className="flex flex-wrap justify-center items-stretch space-x-4">
@@ -67,19 +62,6 @@ const ArtistPage = (): React.ReactElement => {
       { type: "following", limit: 50 }, // following is artists api type
       { accessToken },
       setArtists,
-      errorFetchingHandler
-    );
-
-    await getCurrentUserPlaylists(
-      { limit: 50, offset: 0 },
-      { accessToken },
-      (responseData) => {
-        dispatch(
-          setPageData({
-            currentUserPlaylists: responseData,
-          })
-        );
-      },
       errorFetchingHandler
     );
   }, [accessToken]);

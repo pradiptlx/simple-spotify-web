@@ -104,27 +104,13 @@ const PlaylistPage = (): React.ReactElement => {
 
   const fetchHandler = React.useCallback(async () => {
     if (!accessToken || !isAccessTokenExists) return;
+
     await getPlaylist(
       { playlistId },
       { accessToken },
       setPlaylistTracksHandler,
       errorFetchingHandler
     );
-
-    if (currentUserPlaylists.length === 0) {
-      await getCurrentUserPlaylists(
-        { limit: 50, offset: 0 },
-        { accessToken },
-        (responseData) => {
-          dispatch(
-            setPageData({
-              currentUserPlaylists: responseData,
-            })
-          );
-        },
-        errorFetchingHandler
-      );
-    }
   }, [accessToken, isAccessTokenExists, playlistId, currentUserPlaylists]);
 
   React.useEffect(() => {

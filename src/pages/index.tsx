@@ -56,43 +56,24 @@ function Home(): React.ReactElement {
   >([]);
 
   const fetchDepedencies = React.useCallback(async () => {
-    if (accessToken && isAccessTokenExists) {
-      await getCurrentUserPlaylists(
-        { limit: 50, offset: 0 },
-        { accessToken },
-        (responseData) => {
-          dispatch(setPageData({ currentUserPlaylists: responseData }));
-        },
-        ({ statusCode }) => {
-          if (statusCode === 400 || statusCode === 401) {
-            dispatch(
-              setExpiredTokenTime({
-                expiredTokenTime: 0,
-                isTokenExpired: true,
-              })
-            );
-            history.replace("/login");
-          }
-        }
-      );
+    if (!accessToken && !isAccessTokenExists) return;
 
-      await getAllFeaturedPlaylists(
-        { limit: 50, offset: 0, country: "ID" },
-        { accessToken },
-        setFeaturedPlaylists,
-        ({ statusCode }) => {
-          if (statusCode === 400 || statusCode === 401) {
-            dispatch(
-              setExpiredTokenTime({
-                expiredTokenTime: 0,
-                isTokenExpired: true,
-              })
-            );
-            history.replace("/login");
-          }
+    await getAllFeaturedPlaylists(
+      { limit: 50, offset: 0, country: "ID" },
+      { accessToken },
+      setFeaturedPlaylists,
+      ({ statusCode }) => {
+        if (statusCode === 400 || statusCode === 401) {
+          dispatch(
+            setExpiredTokenTime({
+              expiredTokenTime: 0,
+              isTokenExpired: true,
+            })
+          );
+          history.replace("/login");
         }
-      );
-    }
+      }
+    );
   }, [accessToken, isAccessTokenExists]);
 
   React.useEffect(() => {

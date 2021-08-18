@@ -61,7 +61,7 @@ type getAllFeaturedPlaylistsType = queryParameter & {
 };
 
 type getCurrentUserSavedDataType = queryParameter & {
-  type: "albums" | "tracks" | "following";
+  type: "albums" | "tracks" | "following" | "playlists";
 };
 
 // **********************************************
@@ -304,11 +304,11 @@ const getCurrentUserSavedData: getQueryAPIRequestFn<getCurrentUserSavedDataType>
     setResponseFn,
     errorCallback
   ): Promise<void> => {
-    const query = qs.stringify({
-      limit,
-      offset,
-      type: type === "following" ? "artist" : "",
-    });
+    const queryParams =
+      type === "following"
+        ? { limit, offset, type: "artist" }
+        : { limit, offset };
+    const query = qs.stringify(queryParams);
 
     try {
       const response = await axios.get(
@@ -330,9 +330,15 @@ const getCurrentUserSavedData: getQueryAPIRequestFn<getCurrentUserSavedDataType>
         const tracks = responseObject.items.map((item) => item.track);
         setResponseFn(tracks);
       } else if (type === "following") {
-        const responseObject: CursorPagingObject<ArtistObject> = response.data.artists;
+        const responseObject: CursorPagingObject<ArtistObject> =
+          response.data.artists;
         const artists = responseObject.items.map((item) => item);
         setResponseFn(artists);
+      } else if (type === "playlists") {
+        const responseObject: PagingObject<SimplifiedPlaylistObject> =
+          response.data;
+        const playlists: SimplifiedPlaylistObject[] = responseObject.items;
+        setResponseFn(playlists);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
