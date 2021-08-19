@@ -11,7 +11,14 @@ const AlbumVariant: React.FC<variantType<AlbumObject>> = (props) => {
       {items.map((item) => (
         <div
           className="mx-4 relative flex-shrink-0 rounded-lg shadow-lg text-center mt-10 dark:bg-gray-700 transition duration-500 ease-in-out hover:bg-gray-200 dark:hover:bg-gray-900 transform hover:-translate-y-2 hover:scale-105"
-          role="presentation"
+          onClick={() => {
+            window.open(item.external_urls.spotify, "_blank");
+          }}
+          onKeyPress={() => {
+            window.open(item.external_urls.spotify, "_blank");
+          }}
+          role="button"
+          tabIndex={0}
         >
           <div className="max-w-sm rounded-lg overflow-hidden">
             <AlbumArt

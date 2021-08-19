@@ -11,6 +11,14 @@ const ArtistVariant: React.FC<variantType<ArtistObject>> = (props) => {
         <div
           key={item.id}
           className="mx-4 flex flex-col items-center rounded overflow-hidden shadow-lg text-center transition duration-200 ease-in-out hover:bg-secondary-light dark:hover:bg-secondary-dark dark:bg-gray-700 dark:bg-opacity-10 my-10"
+          onClick={() => {
+            window.open(item.external_urls.spotify, "_blank");
+          }}
+          onKeyPress={() => {
+            window.open(item.external_urls.spotify, "_blank");
+          }}
+          role="button"
+          tabIndex={0}
         >
           <img
             className="rounded-full"

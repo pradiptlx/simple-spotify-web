@@ -70,6 +70,7 @@ const AlbumArt: React.FC<albumArtProps> = (props) => {
             onClick={() => {
               window.open(urlSpotify, "_blank");
             }}
+            role="button"
             className={classes.playIcon}
           />
         </Zoom>
