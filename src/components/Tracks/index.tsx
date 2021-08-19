@@ -118,6 +118,7 @@ const Tracks: React.FC<tracksProps> = (props) => {
             albumArtFetched={data.album.images[0].url}
             altText={data.name}
             isSelected={selectedTrack[data.id]?.active}
+            urlSpotify={data.album.external_urls.spotify}
           />
           <TrackInfo
             titleFetched={data.name}

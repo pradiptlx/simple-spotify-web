@@ -17,6 +17,7 @@ const TrackVariant: React.FC<variantType<TrackObject>> = (props) => {
           <AlbumArt
             albumArtFetched={item.album.images[0].url}
             altText={item.name}
+            urlSpotify={item.external_urls.spotify}
           />
           <TrackInfo
             titleFetched={item.name}

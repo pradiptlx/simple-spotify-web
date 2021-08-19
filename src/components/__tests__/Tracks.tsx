@@ -22,6 +22,9 @@ const albumMockData = {
   images: [{ url: "", height: null, width: null }],
   name: "album 1",
   type: "album",
+  external_urls: { spotify: "http://localhost" },
+  uri: "",
+  href: "",
 };
 
 const tracksMockData = [

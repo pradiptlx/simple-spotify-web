@@ -83,6 +83,9 @@ export interface SimplifiedAlbumObject {
   id: string;
   images: ImageObject[];
   name: string;
+  href: string;
+  external_urls: ExternalUrlObject;
+  uri: string;
 }
 
 export interface SimplifiedPlaylistObject {

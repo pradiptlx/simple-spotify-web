@@ -1,16 +1,48 @@
 import React from "react";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
+import { Theme, makeStyles } from "@material-ui/core/styles";
+import Zoom from "@material-ui/core/Zoom";
 
 type albumArtProps = {
   albumArtFetched?: string;
   altText?: string;
   isSelected?: boolean;
+  urlSpotify: string;
 };
 
+const useStyles = makeStyles((theme: Theme) => ({
+  playIcon: {
+    fontSize: "4rem",
+    position: "absolute",
+    bottom: "2px",
+    right: "3px",
+    color:
+      theme.palette.type === "dark"
+        ? theme.palette.secondary.dark
+        : theme.palette.secondary.light,
+  },
+}));
+
 const AlbumArt: React.FC<albumArtProps> = (props) => {
+  const classes = useStyles();
   const { albumArtFetched, altText = "", isSelected = false } = props;
+  const [isHover, setIsHover] = React.useState(false);
+
+  const onHoverImageHandler = () => {
+    setIsHover(true);
+  };
+
+  const onLeaveMouseHandler = () => {
+    setIsHover(false);
+  };
+
   return (
-    <div className="wrapper-img relative">
+    <div
+      className="wrapper-img relative"
+      onMouseLeave={onLeaveMouseHandler}
+      onMouseEnter={onHoverImageHandler}
+    >
       {albumArtFetched ? (
         <img className="w-full" src={albumArtFetched} alt={altText} />
       ) : (
@@ -27,6 +59,14 @@ const AlbumArt: React.FC<albumArtProps> = (props) => {
           }}
         />
       )}
+      <Zoom in={isHover}>
+        <PlayCircleFilledIcon
+          onClick={() => {
+            window.open(props.urlSpotify, "_blank");
+          }}
+          className={classes.playIcon}
+        />
+      </Zoom>
     </div>
   );
 };
