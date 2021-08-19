@@ -157,7 +157,7 @@ function CreatePlaylist(): React.ReactElement {
           isError={isErrorCreatePlaylist}
         />
       )}
-      <div className="flex flex-col">
+      <div className="flex flex-col min-h-screen">
         <div className="m-auto">
           <Searchbar
             onInputSearchHandler={onInputSearchHandler}
