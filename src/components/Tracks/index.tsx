@@ -1,6 +1,5 @@
 /* eslint-disable react/forbid-prop-types */
 import React from "react";
-// import Mock from "../../data";
 import { selectedTrackIdentifier } from "pages/CreatePlaylist";
 import { TrackObject } from "api/interfaces";
 import Box from "@material-ui/core/Box";
@@ -49,6 +48,7 @@ const Tracks: React.FC<tracksProps> = (props) => {
         style={{
           maxWidth: "24rem",
           overflow: "hidden",
+          margin: 'auto 1rem'
         }}
         data-testid="emptyTrackComponent"
       >
@@ -56,7 +56,7 @@ const Tracks: React.FC<tracksProps> = (props) => {
           variant="rect"
           animation="wave"
           width={600}
-          height="300px"
+          height="400px"
           style={{
             borderRadius: "0.25rem",
           }}
@@ -135,7 +135,9 @@ const Tracks: React.FC<tracksProps> = (props) => {
       ))}
     </div>
   ) : (
-    <>{emptyDataComponent()}</>
+    <div className="flex flex-wrap justify-center items-stretch">
+      {emptyDataComponent()}
+    </div>
   );
 };
 
