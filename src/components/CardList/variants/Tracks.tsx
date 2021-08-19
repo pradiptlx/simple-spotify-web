@@ -4,9 +4,7 @@ import AlbumArt from "components/AlbumArt";
 import { TrackObject } from "api/interfaces";
 import { variantType } from "..";
 
-const TrackVariant: React.FC<variantType<TrackObject>> = (
-  props
-) => {
+const TrackVariant: React.FC<variantType<TrackObject>> = (props) => {
   const { items } = props;
 
   return (
@@ -14,7 +12,7 @@ const TrackVariant: React.FC<variantType<TrackObject>> = (
       {items.map((item) => (
         <div
           key={item.id}
-          className="max-w-sm rounded overflow-hidden shadow-lg text-center dark:bg-gray-700 my-10"
+          className="max-w-sm rounded overflow-hidden shadow-lg text-center transition duration-200 ease-in-out hover:bg-secondary-light dark:hover:bg-secondary-dark dark:bg-gray-700 my-10"
         >
           <AlbumArt
             albumArtFetched={item.album.images[0].url}

@@ -270,6 +270,16 @@ function App(): React.ReactElement {
       createTheme({
         palette: {
           type: darkTheme ? "dark" : "light",
+          primary: {
+            light: "#737d8e",
+            main: "#475161",
+            dark: "#1f2937",
+          },
+          secondary: {
+            light: "#d7ffd9",
+            main: "#a5d6a7",
+            dark: "#75a478",
+          },
         },
       }),
     [darkTheme]

@@ -12,7 +12,7 @@ const PlaylistVariant: React.FC<variantType<SimplifiedPlaylistObject>> = (
       {items.map((item) => (
         <div
           key={item.id}
-          className="max-w-sm rounded overflow-hidden shadow-lg text-center dark:bg-gray-700 my-10"
+          className="max-w-sm rounded overflow-hidden shadow-lg text-center transition duration-200 ease-in-out hover:bg-secondary-light dark:hover:bg-secondary-dark dark:bg-gray-700 my-10"
         >
           <img
             className="w-full rounded-lg"

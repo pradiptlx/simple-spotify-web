@@ -10,7 +10,7 @@ const ArtistVariant: React.FC<variantType<ArtistObject>> = (props) => {
       {items.map((item) => (
         <div
           key={item.id}
-          className="flex flex-col items-center rounded overflow-hidden shadow-lg text-center dark:bg-gray-700 dark:bg-opacity-10 my-10"
+          className="flex flex-col items-center rounded overflow-hidden shadow-lg text-center transition duration-200 ease-in-out hover:bg-secondary-light dark:hover:bg-secondary-dark dark:bg-gray-700 dark:bg-opacity-10 my-10"
         >
           <img
             className="rounded-full"

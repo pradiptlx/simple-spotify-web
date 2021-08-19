@@ -10,7 +10,7 @@ const AlbumVariant: React.FC<variantType<AlbumObject>> = (props) => {
     <div className="flex flex-wrap justify-center items-stretch space-x-4">
       {items.map((item) => (
         <div
-          className="relative flex-shrink-0 rounded-lg shadow-lg text-center mt-10 dark:bg-gray-700"
+          className="relative flex-shrink-0 rounded-lg shadow-lg text-center mt-10 dark:bg-gray-700 transition duration-500 ease-in-out hover:bg-gray-200 dark:hover:bg-gray-900 transform hover:-translate-y-2 hover:scale-105"
           role="presentation"
         >
           <div className="max-w-sm rounded-lg overflow-hidden">
