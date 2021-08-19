@@ -1,12 +1,13 @@
 .btnToggle {
   border: 2px solid;
-  border-radius: 30px;
+  border-color: rgba(256, 256, 256, 0.4);
+  border-radius: 2rem;
   cursor: pointer;
   display: flex;
   font-size: 0.5rem;
   justify-content: space-between;
   align-items: center;
-  margin: 0 auto;
+  margin: auto;
   overflow: hidden;
   padding: 0.5rem;
   position: relative;
