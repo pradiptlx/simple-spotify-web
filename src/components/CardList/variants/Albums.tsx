@@ -17,7 +17,6 @@ const AlbumVariant: React.FC<variantType<AlbumObject>> = (props) => {
             <AlbumArt
               albumArtFetched={item.images ? item.images[0].url : ""}
               altText={item.name}
-              urlSpotify={item.external_urls.spotify}
             />
           </div>
 
