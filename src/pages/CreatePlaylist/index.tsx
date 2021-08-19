@@ -4,11 +4,7 @@ import {
   useAppSelector as useSelector,
 } from "redux/store";
 import Collapse from "@material-ui/core/Collapse";
-import {
-  searchSpotify,
-  createPlaylist,
-  addTrackToPlaylist,
-} from "api/fetch";
+import { searchSpotify, createPlaylist, addTrackToPlaylist } from "api/fetch";
 import { TrackObject, PlaylistObject } from "api/interfaces";
 import Searchbar from "../../components/Searchbar";
 import Tracks from "../../components/Tracks";
@@ -36,9 +32,7 @@ function CreatePlaylist(): React.ReactElement {
   const [countSelectedTrack, setCountSelectedTrack] = React.useState(0);
   const [searchValue, setSearchValue] = React.useState("");
 
-  const { accessToken } = useSelector(
-    (state) => state.authorization
-  );
+  const { accessToken } = useSelector((state) => state.authorization);
 
   const userProfile = useSelector((state) => state.user);
   const [currentPlaylist, setCurrentPlaylist] =
@@ -155,7 +149,7 @@ function CreatePlaylist(): React.ReactElement {
   }, [selectedTrack]);
 
   return (
-    <>
+    <div className="bg-white dark:bg-gray-800 min-h-screen">
       {isDoneCreatePlaylist && (
         <Alert
           titlePlaylist={playlistValue?.titlePlaylist}
@@ -163,7 +157,7 @@ function CreatePlaylist(): React.ReactElement {
           isError={isErrorCreatePlaylist}
         />
       )}
-      <div className="bg-white dark:bg-gray-800 h-screen flex flex-col">
+      <div className="flex flex-col">
         <div className="m-auto">
           <Searchbar
             onInputSearchHandler={onInputSearchHandler}
@@ -172,7 +166,7 @@ function CreatePlaylist(): React.ReactElement {
           />
         </div>
 
-        <div className="bg-white dark:bg-gray-800 mt-5 flex flex-col">
+        <div className="mt-5 flex flex-col">
           <Collapse
             in={countSelectedTrack > 0}
             style={{
@@ -188,20 +182,15 @@ function CreatePlaylist(): React.ReactElement {
               />
             </div>
           </Collapse>
-          <div
-            id="tracks"
-            className="flex flex-wrap justify-center items-stretch space-x-4"
-          >
-            {dataFetched.length > 0 && (
-              <Tracks
-                trackData={dataFetched}
-                selectedTrackFn={setSelectedTrack}
-              />
-            )}
-          </div>
+          {dataFetched.length > 0 && (
+            <Tracks
+              trackData={dataFetched}
+              selectedTrackFn={setSelectedTrack}
+            />
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

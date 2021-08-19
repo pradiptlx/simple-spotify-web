@@ -99,10 +99,10 @@ const Tracks: React.FC<tracksProps> = (props) => {
     ));
 
   return trackData.length && !isLoading ? (
-    <>
+    <div className="flex flex-wrap justify-center items-stretch">
       {trackData.map((data, idx) => (
         <div
-          className={`tracks flex-shrink-0 rounded-lg shadow-lg text-center mt-10 dark:bg-gray-700 ${
+          className={`mx-4 flex-shrink-0 rounded-lg shadow-lg text-center mt-10 dark:bg-gray-700 overflow-hidden max-w-sm flex flex-col justify-between gap-y-2 ${
             !selectedTrack[data.id]?.active
               ? "transition duration-500 ease-in-out hover:bg-gray-200 dark:hover:bg-gray-900 transform hover:-translate-y-2 hover:scale-105"
               : ""
@@ -114,28 +114,25 @@ const Tracks: React.FC<tracksProps> = (props) => {
           }}
           role="presentation"
         >
-          <div className="max-w-sm rounded-lg overflow-hidden">
-            <AlbumArt
-              albumArtFetched={data.album.images[0].url}
-              altText={data.name}
-              isSelected={selectedTrack[data.id]?.active}
-            />
-            <TrackInfo
-              titleFetched={data.name}
-              artistName={data.artists[0].name}
-              albumName={data.album.name}
-            />
-            <button
-              //   onClick={() => window.open(data.external_urls.spotify, "_blank")}
-              type="button"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-10 my-5 rounded-full"
-            >
-              {selectedTrack[data.id]?.active ? "Deselect" : "Select"}
-            </button>
-          </div>
+          <AlbumArt
+            albumArtFetched={data.album.images[0].url}
+            altText={data.name}
+            isSelected={selectedTrack[data.id]?.active}
+          />
+          <TrackInfo
+            titleFetched={data.name}
+            artistName={data.artists[0].name}
+            albumName={data.album.name}
+          />
+          <button
+            type="button"
+            className="bg-secondary-main hover:bg-secondary-dark text-black font-bold py-2 px-10 m-auto mb-4 rounded-full w-1/2"
+          >
+            {selectedTrack[data.id]?.active ? "Deselect" : "Select"}
+          </button>
         </div>
       ))}
-    </>
+    </div>
   ) : (
     <>{emptyDataComponent()}</>
   );

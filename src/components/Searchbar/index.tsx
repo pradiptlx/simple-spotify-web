@@ -12,9 +12,9 @@ const Searchbar: React.FC<searchBarProps> = (props) => {
   return (
     <div
       id="searchbar-wrapper"
-      className="text-center dark:bg-gray-800 dark:text-white pt-5"
+      className="dark:bg-gray-800 dark:text-white pt-5"
     >
-      <div id="searchBox">
+      <div>
         <form onSubmit={onSearchHandler}>
           <input
             id="searchInput"
