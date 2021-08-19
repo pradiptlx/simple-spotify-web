@@ -209,9 +209,7 @@ const Navbar = (): React.ReactElement => {
           </div>
         </NavLink>
 
-        {userProfile.id && userProfile.images
-          ? userProfile.images[0].url
-          : "" && (
+        {userProfile.id && (
               <div
                 className="flex items-center ml-2"
                 onClick={() => {
