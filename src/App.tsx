@@ -19,6 +19,7 @@ import PlaylistPage from "pages/Playlist";
 import AlbumPage from "pages/Album";
 import ArtistPage from "pages/Artist";
 import TrackPage from "pages/Track";
+import NotFoundPage from "pages/NotFound";
 import {
   setAccessToken,
   setExpiredTokenTime,
@@ -314,6 +315,8 @@ function App(): React.ReactElement {
             />
           );
         })}
+
+        <Route component={NotFoundPage} />
       </Switch>
     </ThemeProvider>
   );
