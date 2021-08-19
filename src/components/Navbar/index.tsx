@@ -80,7 +80,7 @@ const Navbar = (): React.ReactElement => {
   }, [profileMenuOpen]);
 
   return (
-    <nav className="bg-gray-800 shadow-2xl md:shadow-none sticky top-0 md:static">
+    <nav className="bg-gray-800 shadow-2xl md:shadow-none sticky top-0 md:static z-10">
       <div className="hidden sm:block max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 text-white">
         <div className={`${styles.gridContainer} h-16`}>
           <NavLink
