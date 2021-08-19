@@ -60,6 +60,7 @@ const Albums: React.FC<albumsType> = (props) => {
               <AlbumArt
                 albumArtFetched={album.images ? album.images[0].url : ""}
                 altText={album.name}
+                urlSpotify={album.external_urls.spotify}
               />
             </div>
 

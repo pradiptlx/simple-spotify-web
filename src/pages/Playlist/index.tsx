@@ -7,9 +7,8 @@ import {
 import { useParams, useHistory } from "react-router-dom";
 import Sidebar from "components/Sidebar";
 import { PlaylistObject, TrackObject } from "api/interfaces";
-import { errorArgFn, getCurrentUserPlaylists, getPlaylist } from "api/fetch";
+import { errorArgFn, getPlaylist } from "api/fetch";
 import { setExpiredTokenTime } from "redux/actions/authorization";
-import { setPageData } from "redux/actions/app";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
 import CardList from "components/CardList";
@@ -104,27 +103,13 @@ const PlaylistPage = (): React.ReactElement => {
 
   const fetchHandler = React.useCallback(async () => {
     if (!accessToken || !isAccessTokenExists) return;
+
     await getPlaylist(
       { playlistId },
       { accessToken },
       setPlaylistTracksHandler,
       errorFetchingHandler
     );
-
-    if (currentUserPlaylists.length === 0) {
-      await getCurrentUserPlaylists(
-        { limit: 50, offset: 0 },
-        { accessToken },
-        (responseData) => {
-          dispatch(
-            setPageData({
-              currentUserPlaylists: responseData,
-            })
-          );
-        },
-        errorFetchingHandler
-      );
-    }
   }, [accessToken, isAccessTokenExists, playlistId, currentUserPlaylists]);
 
   React.useEffect(() => {
@@ -137,8 +122,8 @@ const PlaylistPage = (): React.ReactElement => {
 
   return (
     <div className="bg-white dark:bg-gray-800 min-h-screen">
-      <div className="grid grid-cols-sidebar">
-        <div className="h-full">
+      <div className="grid md:grid-cols-sidebar">
+        <div className="hidden md:block h-full">
           <Sidebar />
         </div>
 

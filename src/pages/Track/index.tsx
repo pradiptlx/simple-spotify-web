@@ -1,12 +1,7 @@
 import React from "react";
-import {
-  errorArgFn,
-  getCurrentUserPlaylists,
-  getCurrentUserSavedData,
-} from "api/fetch";
+import { errorArgFn, getCurrentUserSavedData } from "api/fetch";
 import Sidebar from "components/Sidebar";
 import { useHistory } from "react-router-dom";
-import { setPageData } from "redux/actions/app";
 import { setExpiredTokenTime } from "redux/actions/authorization";
 import {
   useAppDispatch as useDispatch,
@@ -99,21 +94,6 @@ const TrackPage = (): React.ReactElement => {
       setTracks,
       errorFetchingHandler
     );
-
-    if (currentUserPlaylists.length === 0) {
-      await getCurrentUserPlaylists(
-        { limit: 50, offset: 0 },
-        { accessToken },
-        (responseData) => {
-          dispatch(
-            setPageData({
-              currentUserPlaylists: responseData,
-            })
-          );
-        },
-        errorFetchingHandler
-      );
-    }
   }, [accessToken, isAccessTokenExists, currentUserPlaylists]);
 
   React.useEffect(() => {
@@ -126,8 +106,8 @@ const TrackPage = (): React.ReactElement => {
 
   return (
     <div className="bg-white dark:bg-gray-800 min-h-screen">
-      <div className="grid grid-cols-sidebar">
-        <div className="h-full">
+      <div className="grid md:grid-cols-sidebar">
+        <div className="hidden md:block h-full">
           <Sidebar />
         </div>
 

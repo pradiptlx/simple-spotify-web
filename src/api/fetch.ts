@@ -7,7 +7,6 @@ import {
   CursorPagingObject,
   PagingObject,
   PlaylistObject,
-  PrivateUserObject,
   SavedAlbumObject,
   SavedTrackObject,
   SimplifiedPlaylistObject,
@@ -52,16 +51,12 @@ type createPlaylistAPIIdentifier = {
   collaborative: boolean;
 };
 
-type getCurrentUserPlaylistsAPIIdentifier = queryParameter & {
-  publicOnly?: boolean;
-};
-
 type getAllFeaturedPlaylistsType = queryParameter & {
   country: string;
 };
 
 type getCurrentUserSavedDataType = queryParameter & {
-  type: "albums" | "tracks" | "following";
+  type: "albums" | "tracks" | "following" | "playlists";
 };
 
 // **********************************************
@@ -130,18 +125,7 @@ const fetchCurrentUserProfile: getAPIRequestFn = (
     })
     .then((response) => {
       if (response.data) {
-        const {
-          display_name,
-          id,
-          images,
-          external_urls,
-        }: Partial<PrivateUserObject> = response.data;
-        setUserProfileFn({
-          id,
-          displayName: display_name,
-          imageUrl: images ? images[0].url : "",
-          spotifyUrl: external_urls?.spotify,
-        } as PrivateUserObject);
+        setUserProfileFn(response.data);
       }
     })
     .catch((error) => {
@@ -179,38 +163,6 @@ const createPlaylist: postAPIRequestFn<createPlaylistAPIIdentifier> = async (
       errorCallback({ error, statusCode });
     });
 };
-
-const getCurrentUserPlaylists: getQueryAPIRequestFn<getCurrentUserPlaylistsAPIIdentifier> =
-  async (
-    { limit = 50, offset = 0, publicOnly = true },
-    { accessToken },
-    setPlaylistsFn,
-    errorCallback
-  ): Promise<void> => {
-    axios
-      .get(
-        `${process.env.REACT_APP_SPOTIFY_API_URL}/me/playlists?limit=${limit}&offset=${offset}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      )
-      .then((response) => {
-        if (response.data && response.data?.items) {
-          const publicPlaylists: SimplifiedPlaylistObject[] = publicOnly
-            ? response.data.items.filter(
-                (data: SimplifiedPlaylistObject) => data.public
-              )
-            : response.data.items;
-          setPlaylistsFn(publicPlaylists);
-        }
-      })
-      .catch((error) => {
-        const statusCode = error.response?.status;
-        errorCallback({ error, statusCode });
-      });
-  };
 
 const getPlaylist: getQueryAPIRequestFn<pathParameter> = async (
   { playlistId },
@@ -315,11 +267,11 @@ const getCurrentUserSavedData: getQueryAPIRequestFn<getCurrentUserSavedDataType>
     setResponseFn,
     errorCallback
   ): Promise<void> => {
-    const query = qs.stringify({
-      limit,
-      offset,
-      type: type === "following" ? "artist" : "",
-    });
+    const queryParams =
+      type === "following"
+        ? { limit, offset, type: "artist" }
+        : { limit, offset };
+    const query = qs.stringify(queryParams);
 
     try {
       const response = await axios.get(
@@ -341,9 +293,15 @@ const getCurrentUserSavedData: getQueryAPIRequestFn<getCurrentUserSavedDataType>
         const tracks = responseObject.items.map((item) => item.track);
         setResponseFn(tracks);
       } else if (type === "following") {
-        const responseObject: CursorPagingObject<ArtistObject> = response.data.artists;
+        const responseObject: CursorPagingObject<ArtistObject> =
+          response.data.artists;
         const artists = responseObject.items.map((item) => item);
         setResponseFn(artists);
+      } else if (type === "playlists") {
+        const responseObject: PagingObject<SimplifiedPlaylistObject> =
+          response.data;
+        const playlists: SimplifiedPlaylistObject[] = responseObject.items;
+        setResponseFn(playlists);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -361,7 +319,6 @@ export {
   createPlaylist,
   getPlaylist,
   addTrackToPlaylist,
-  getCurrentUserPlaylists,
   getAllFeaturedPlaylists,
   getCurrentUserSavedData,
 };

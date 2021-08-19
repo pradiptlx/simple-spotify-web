@@ -4,14 +4,8 @@ import {
   useAppSelector as useSelector,
 } from "redux/store";
 import Collapse from "@material-ui/core/Collapse";
-import {
-  fetchCurrentUserProfile,
-  searchSpotify,
-  // getPlaylist,
-  createPlaylist,
-  addTrackToPlaylist,
-} from "api/fetch";
-import { TrackObject, PrivateUserObject, PlaylistObject } from "api/interfaces";
+import { searchSpotify, createPlaylist, addTrackToPlaylist } from "api/fetch";
+import { TrackObject, PlaylistObject } from "api/interfaces";
 import Searchbar from "../../components/Searchbar";
 import Tracks from "../../components/Tracks";
 import Alert from "../../components/Alert";
@@ -38,14 +32,9 @@ function CreatePlaylist(): React.ReactElement {
   const [countSelectedTrack, setCountSelectedTrack] = React.useState(0);
   const [searchValue, setSearchValue] = React.useState("");
 
-  const { accessToken, isAccessTokenExists, isTokenExpired } = useSelector(
-    (state) => state.authorization
-  );
+  const { accessToken } = useSelector((state) => state.authorization);
 
   const userProfile = useSelector((state) => state.user);
-
-  // const [userProfile, setUserProfile] =
-  //   React.useState<Partial<PrivateUserObject>>();
   const [currentPlaylist, setCurrentPlaylist] =
     React.useState<PlaylistObject>();
   const [playlistValue, setPlaylistValue] =
@@ -124,30 +113,6 @@ function CreatePlaylist(): React.ReactElement {
     }
   };
 
-  // React.useEffect(() => {
-  //   if (
-  //     userProfile &&
-  //     (Object.keys(userProfile).length === 0 || isTokenExpired) &&
-  //     isAccessTokenExists
-  //   ) {
-  //     fetchCurrentUserProfile(
-  //       { accessToken },
-  //       setUserProfile,
-  //       ({ statusCode }) => {
-  //         if (statusCode === 400 || statusCode === 401) {
-  //           // setIsTokenExpired(true);
-  //           dispatch(
-  //             setExpiredTokenTime({
-  //               expiredTokenTime: 0,
-  //               isTokenExpired: true,
-  //             })
-  //           );
-  //         }
-  //       }
-  //     );
-  //   }
-  // }, [accessToken, isTokenExpired, isAccessTokenExists]);
-
   React.useEffect(() => {
     if (
       accessToken &&
@@ -184,7 +149,7 @@ function CreatePlaylist(): React.ReactElement {
   }, [selectedTrack]);
 
   return (
-    <>
+    <div className="bg-white dark:bg-gray-800 min-h-screen">
       {isDoneCreatePlaylist && (
         <Alert
           titlePlaylist={playlistValue?.titlePlaylist}
@@ -192,7 +157,7 @@ function CreatePlaylist(): React.ReactElement {
           isError={isErrorCreatePlaylist}
         />
       )}
-      <div className="bg-white dark:bg-gray-800 h-screen flex flex-col">
+      <div className="flex flex-col min-h-screen">
         <div className="m-auto">
           <Searchbar
             onInputSearchHandler={onInputSearchHandler}
@@ -201,7 +166,7 @@ function CreatePlaylist(): React.ReactElement {
           />
         </div>
 
-        <div className="bg-white dark:bg-gray-800 mt-5 flex flex-col">
+        <div className="mt-5 flex flex-col">
           <Collapse
             in={countSelectedTrack > 0}
             style={{
@@ -217,20 +182,15 @@ function CreatePlaylist(): React.ReactElement {
               />
             </div>
           </Collapse>
-          <div
-            id="tracks"
-            className="flex flex-wrap justify-center items-stretch space-x-4"
-          >
-            {dataFetched.length > 0 && (
-              <Tracks
-                trackData={dataFetched}
-                selectedTrackFn={setSelectedTrack}
-              />
-            )}
-          </div>
+          {dataFetched.length > 0 && (
+            <Tracks
+              trackData={dataFetched}
+              selectedTrackFn={setSelectedTrack}
+            />
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

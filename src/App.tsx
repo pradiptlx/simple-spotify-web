@@ -6,13 +6,14 @@ import {
   useAppSelector as useSelector,
 } from "redux/store";
 import {
-  BrowserRouter,
   Switch,
   Route,
   Redirect,
   RouteComponentProps,
+  useLocation,
+  useHistory,
 } from "react-router-dom";
-import { setDarkTheme } from "redux/actions/app";
+import { setDarkTheme, setPageData } from "redux/actions/app";
 import { createTheme, Theme, ThemeProvider } from "@material-ui/core/styles";
 import PlaylistPage from "pages/Playlist";
 import AlbumPage from "pages/Album";
@@ -24,7 +25,7 @@ import {
   setLoginState,
 } from "./redux/actions/authorization";
 import { setCurrentUser } from "./redux/actions/user";
-import { fetchCurrentUserProfile } from "./api/fetch";
+import { fetchCurrentUserProfile, getCurrentUserSavedData } from "./api/fetch";
 import { parsingAccessToken } from "./utils/authorization";
 import Navbar from "./components/Navbar";
 import Home from "./pages";
@@ -70,8 +71,11 @@ type localStorageAccessToken = {
 
 function App(): React.ReactElement {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const history = useHistory();
   const { isLogin, isTokenExpired, isAccessTokenExists, accessToken } =
     useSelector((state) => state.authorization);
+  const { currentUserPlaylists } = useSelector((state) => state.app);
   const currentUser = useSelector((state) => state.user);
   const { darkTheme } = useSelector((state) => state.app);
   const [isFirstMounted, setIsFirstMounted] = React.useState(true);
@@ -135,6 +139,40 @@ function App(): React.ReactElement {
       }
     }
   }, []);
+
+  React.useEffect(() => {
+    const excludePaths = ["/create-playlist", "/login"];
+    if (!accessToken && !isAccessTokenExists) return;
+
+    if (
+      location &&
+      !excludePaths.includes(location.pathname) &&
+      currentUserPlaylists.length === 0
+    ) {
+      getCurrentUserSavedData(
+        { type: "playlists", limit: 50, offset: 0 },
+        { accessToken },
+        (responseData) => {
+          dispatch(
+            setPageData({
+              currentUserPlaylists: responseData,
+            })
+          );
+        },
+        ({ statusCode }) => {
+          if (statusCode === 400 || statusCode === 401) {
+            dispatch(
+              setExpiredTokenTime({
+                expiredTokenTime: 0,
+                isTokenExpired: true,
+              })
+            );
+            history.replace("/login");
+          }
+        }
+      );
+    }
+  }, [location, accessToken, isAccessTokenExists, currentUserPlaylists]);
 
   const changeDomThemeHandler = React.useCallback(() => {
     // Manual Dark Theme Mode
@@ -232,6 +270,16 @@ function App(): React.ReactElement {
       createTheme({
         palette: {
           type: darkTheme ? "dark" : "light",
+          primary: {
+            light: "#737d8e",
+            main: "#475161",
+            dark: "#1f2937",
+          },
+          secondary: {
+            light: "#d7ffd9",
+            main: "#a5d6a7",
+            dark: "#75a478",
+          },
         },
       }),
     [darkTheme]
@@ -239,36 +287,34 @@ function App(): React.ReactElement {
 
   return (
     <ThemeProvider<Theme> theme={materialComponentsTheme}>
-      <BrowserRouter>
-        <Navbar />
-        <Switch>
-          {/* Auth Handler */}
-          <Route path="/login" component={Login} />
+      <Navbar />
+      <Switch>
+        {/* Auth Handler */}
+        <Route path="/login" component={Login} />
 
-          {routes.map((route) => {
-            if (route.isPrivate) {
-              return (
-                <PrivateRoute
-                  key={`private_${route.pathname}`}
-                  exact={route.exact}
-                  path={route.pathname}
-                  isPrivate
-                  isLogin={isLogin || isFirstMounted}
-                  component={route.component}
-                />
-              );
-            }
+        {routes.map((route) => {
+          if (route.isPrivate) {
             return (
-              <Route
-                key={`public_${route.pathname}`}
+              <PrivateRoute
+                key={`private_${route.pathname}`}
                 exact={route.exact}
                 path={route.pathname}
+                isPrivate
+                isLogin={isLogin || isFirstMounted}
                 component={route.component}
               />
             );
-          })}
-        </Switch>
-      </BrowserRouter>
+          }
+          return (
+            <Route
+              key={`public_${route.pathname}`}
+              exact={route.exact}
+              path={route.pathname}
+              component={route.component}
+            />
+          );
+        })}
+      </Switch>
     </ThemeProvider>
   );
 }

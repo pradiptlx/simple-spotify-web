@@ -1,11 +1,7 @@
 import { createAction } from "@reduxjs/toolkit";
+import { PrivateUserObject } from "api/interfaces";
 
-export type userDataIdentifier = {
-  id: string;
-  displayName: string;
-  imageUrl: string;
-  spotifyUrl: string;
-};
+export type userDataIdentifier = PrivateUserObject;
 
 const setCurrentUser = createAction(
   "user/profile",

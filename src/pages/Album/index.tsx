@@ -6,15 +6,14 @@ import {
 } from "redux/store";
 import { setExpiredTokenTime } from "redux/actions/authorization";
 import { AlbumObject } from "api/interfaces";
-import { getCurrentUserPlaylists, getCurrentUserSavedData } from "api/fetch";
+import { getCurrentUserSavedData } from "api/fetch";
 import Sidebar from "components/Sidebar";
-import { setPageData } from "redux/actions/app";
 import CardList from "components/CardList";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
 
 const emptyDataComponent = () => (
-  <>
+  <div className="flex flex-wrap justify-center items-stretch space-x-4">
     {new Array(10).fill(0).map((_, idx) => (
       <Box
         // eslint-disable-next-line react/no-array-index-key
@@ -37,7 +36,7 @@ const emptyDataComponent = () => (
         />
       </Box>
     ))}
-  </>
+  </div>
 );
 
 const AlbumPage = (): React.ReactElement => {
@@ -51,33 +50,11 @@ const AlbumPage = (): React.ReactElement => {
 
   const fetchHandler = React.useCallback(async () => {
     if (!accessToken && !isAccessTokenExists) return;
+
     await getCurrentUserSavedData(
       { type: "albums" },
       { accessToken },
       setAlbums,
-      ({ statusCode }) => {
-        if (statusCode === 400 || statusCode === 401) {
-          dispatch(
-            setExpiredTokenTime({
-              expiredTokenTime: 0,
-              isTokenExpired: true,
-            })
-          );
-          history.replace("/login");
-        }
-      }
-    );
-
-    await getCurrentUserPlaylists(
-      { limit: 50, offset: 0 },
-      { accessToken },
-      (responseData) => {
-        dispatch(
-          setPageData({
-            currentUserPlaylists: responseData,
-          })
-        );
-      },
       ({ statusCode }) => {
         if (statusCode === 400 || statusCode === 401) {
           dispatch(
@@ -102,20 +79,18 @@ const AlbumPage = (): React.ReactElement => {
 
   return (
     <div className="bg-white dark:bg-gray-800 min-h-screen">
-      <div className="grid grid-cols-sidebar">
-        <div className="h-full">
+      <div className="grid md:grid-cols-sidebar">
+        <div className="hidden md:block h-full">
           <Sidebar />
         </div>
 
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-3xl dark:text-white my-5">My Albums</h1>
-          <div className="flex flex-wrap justify-center items-stretch space-x-4">
-            <CardList
-              type="albums"
-              cardListItems={albums}
-              emptyDataComponentFn={emptyDataComponent}
-            />
-          </div>
+          <CardList
+            type="albums"
+            cardListItems={albums}
+            emptyDataComponentFn={emptyDataComponent}
+          />
         </div>
       </div>
     </div>

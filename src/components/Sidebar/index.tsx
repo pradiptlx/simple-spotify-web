@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: "auto",
     height: "100%",
     borderTopRightRadius: ".75rem",
+    borderBottomRightRadius: ".75rem",
   },
   listSection: {
     backgroundColor: "inherit",
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxHeight: 400,
   },
   listHeader: {
-    color: theme.palette.text.primary,
+    color: theme.palette.type === "dark" ? theme.palette.text.primary : "white",
     fontSize: "1.3rem",
   },
   listItem: {
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   ul: {
     backgroundColor: "inherit",
-    color: theme.palette.text.primary,
+    color: theme.palette.type === "dark" ? theme.palette.text.primary : "white",
   },
   playlistItem: {
     paddingBottom: 0,
@@ -55,20 +56,22 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const emptyDataComponent = () => (
-  <>
+  <div data-testid="emptySkeleton">
     {new Array(20).fill(0).map((item, idx) => (
       <Box
+        key={`playlist_${idx}`}
         style={{
           paddingBottom: 0,
           paddingTop: 0,
           margin: ".2rem auto",
           width: "15rem",
         }}
+        data-testid="emptySkeletonItem"
       >
         <Skeleton key={`skeleton_${idx}`} variant="text" />
       </Box>
     ))}
-  </>
+  </div>
 );
 
 const Sidebar = (): React.ReactElement => {
@@ -77,7 +80,7 @@ const Sidebar = (): React.ReactElement => {
   const classes = useStyles();
 
   return (
-    <div className="fixed">
+    <div className="fixed shadow-xl">
       <List className={classes.root} subheader={<li />}>
         <li key="section-my-library" className={classes.listSection}>
           <ul className={classes.ul}>
@@ -88,7 +91,7 @@ const Sidebar = (): React.ReactElement => {
             <ListItem className={classes.listItem}>
               <NavLink
                 to="/me/tracks"
-                activeClassName="text-green-400 dark:text-green-200"
+                activeClassName="text-secondary-main dark:text-secondary-dark"
               >
                 <ListItemText>
                   <LibraryMusicOutlinedIcon /> Tracks
@@ -99,7 +102,7 @@ const Sidebar = (): React.ReactElement => {
             <ListItem className={classes.listItem}>
               <NavLink
                 to="/me/albums"
-                activeClassName="text-green-400 dark:text-green-200"
+                activeClassName="text-secondary-main dark:text-secondary-dark"
               >
                 <ListItemText>
                   <AlbumOutlinedIcon /> Albums
@@ -110,7 +113,7 @@ const Sidebar = (): React.ReactElement => {
             <ListItem className={classes.listItem}>
               <NavLink
                 to="/me/artists"
-                activeClassName="text-green-400 dark:text-green-200"
+                activeClassName="text-secondary-main dark:text-secondary-dark"
               >
                 <ListItemText>
                   <PeopleAltOutlinedIcon /> Artists
@@ -134,7 +137,7 @@ const Sidebar = (): React.ReactElement => {
                   >
                     <NavLink
                       to={`/playlist/${playlist.id}`}
-                      activeClassName="text-green-400 dark:text-green-200"
+                      activeClassName="text-secondary-main dark:text-secondary-dark"
                     >
                       <ListItemText>{playlist.name}</ListItemText>
                     </NavLink>

@@ -75,6 +75,7 @@ const Playlists: React.FC<playlistsProps> = (props) => {
           <AlbumArt
             albumArtFetched={playlist.images ? playlist.images[0].url : ""}
             altText={playlist.name}
+            urlSpotify={playlist.external_urls.spotify}
           />
           <div className="px-6 py-4">
             <div className="dark:text-white font-bold text-xl mb-2">

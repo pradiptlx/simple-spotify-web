@@ -5,16 +5,15 @@ import {
 } from "redux/store";
 import { useHistory } from "react-router-dom";
 import { setExpiredTokenTime } from "redux/actions/authorization";
-import { getCurrentUserPlaylists, getAllFeaturedPlaylists } from "api/fetch";
+import { getAllFeaturedPlaylists } from "api/fetch";
 import { SimplifiedPlaylistObject } from "api/interfaces";
 import Sidebar from "components/Sidebar";
-import { setPageData } from "redux/actions/app";
 import CardList from "components/CardList";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
 
 const emptyDataComponent = () => (
-  <>
+  <div className="flex flex-wrap justify-center items-stretch space-x-4">
     {new Array(10).fill(0).map((_, idx) => (
       <Box
         // eslint-disable-next-line react/no-array-index-key
@@ -40,7 +39,7 @@ const emptyDataComponent = () => (
         </Box>
       </Box>
     ))}
-  </>
+  </div>
 );
 
 function Home(): React.ReactElement {
@@ -56,43 +55,24 @@ function Home(): React.ReactElement {
   >([]);
 
   const fetchDepedencies = React.useCallback(async () => {
-    if (accessToken && isAccessTokenExists) {
-      await getCurrentUserPlaylists(
-        { limit: 50, offset: 0 },
-        { accessToken },
-        (responseData) => {
-          dispatch(setPageData({ currentUserPlaylists: responseData }));
-        },
-        ({ statusCode }) => {
-          if (statusCode === 400 || statusCode === 401) {
-            dispatch(
-              setExpiredTokenTime({
-                expiredTokenTime: 0,
-                isTokenExpired: true,
-              })
-            );
-            history.replace("/login");
-          }
-        }
-      );
+    if (!accessToken && !isAccessTokenExists) return;
 
-      await getAllFeaturedPlaylists(
-        { limit: 50, offset: 0, country: "ID" },
-        { accessToken },
-        setFeaturedPlaylists,
-        ({ statusCode }) => {
-          if (statusCode === 400 || statusCode === 401) {
-            dispatch(
-              setExpiredTokenTime({
-                expiredTokenTime: 0,
-                isTokenExpired: true,
-              })
-            );
-            history.replace("/login");
-          }
+    await getAllFeaturedPlaylists(
+      { limit: 50, offset: 0, country: "ID" },
+      { accessToken },
+      setFeaturedPlaylists,
+      ({ statusCode }) => {
+        if (statusCode === 400 || statusCode === 401) {
+          dispatch(
+            setExpiredTokenTime({
+              expiredTokenTime: 0,
+              isTokenExpired: true,
+            })
+          );
+          history.replace("/login");
         }
-      );
-    }
+      }
+    );
   }, [accessToken, isAccessTokenExists]);
 
   React.useEffect(() => {
@@ -101,23 +81,18 @@ function Home(): React.ReactElement {
 
   return (
     <div className="bg-white dark:bg-gray-800 min-h-screen">
-      <div className="grid grid-cols-sidebar">
-        <div className="h-full">
+      <div className="grid md:grid-cols-sidebar">
+        <div className="hidden md:block h-full">
           <Sidebar />
         </div>
 
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-3xl dark:text-white my-5">Trending Now.</h1>
-          <div
-            id="playlists"
-            className="flex flex-wrap justify-center items-stretch space-x-4"
-          >
-            <CardList
-              type="playlists"
-              cardListItems={featuredPlaylists}
-              emptyDataComponentFn={emptyDataComponent}
-            />
-          </div>
+          <CardList
+            type="playlists"
+            cardListItems={featuredPlaylists}
+            emptyDataComponentFn={emptyDataComponent}
+          />
         </div>
       </div>
     </div>

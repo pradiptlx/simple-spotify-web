@@ -22,7 +22,7 @@ const PlaylistForm: React.FC<playlistFormProps> = (props) => {
   return (
     <div className="dark:bg-gray-800 dark:text-white pt-5">
       <form onSubmit={onSubmitPlaylistFormHandler}>
-        <div className="flex items-center gap-x-4">
+        <div className="flex flex-col sm:flex-row items-center gap-y-2 sm:gap-y-0 gap-x-4">
           <div id="playlist-title">
             <input
               id="titlePlaylist"
