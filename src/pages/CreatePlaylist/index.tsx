@@ -4,11 +4,12 @@ import {
   useAppSelector as useSelector,
 } from "redux/store";
 import Collapse from "@material-ui/core/Collapse";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 import { searchSpotify, createPlaylist, addTrackToPlaylist } from "api/fetch";
 import { TrackObject, PlaylistObject } from "api/interfaces";
 import Searchbar from "../../components/Searchbar";
 import Tracks from "../../components/Tracks";
-import Alert from "../../components/Alert";
 import PlaylistForm from "../../components/Playlists/Form";
 import { setExpiredTokenTime } from "../../redux/actions/authorization";
 
@@ -42,12 +43,24 @@ function CreatePlaylist(): React.ReactElement {
   const [isDoneCreatePlaylist, setIsDoneCreatePlaylist] = React.useState(false);
   const [isErrorCreatePlaylist, setIsErrorCreatePlaylist] =
     React.useState(false);
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
 
   const memoTracks = (tracks: TrackObject[]) => {
     const filteredTracks = dataFetched.filter(
       (track) => selectedTrack?.[track.id]?.active
     );
     setDataFetched([...filteredTracks, ...tracks]);
+  };
+
+  const handleCloseSnackbar = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackbar(false);
   };
 
   const onInputSearchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,6 +145,7 @@ function CreatePlaylist(): React.ReactElement {
         () => {
           setTimeout(() => {
             setIsDoneCreatePlaylist(false);
+            setOpenSnackbar(true);
             setPlaylistValue({});
           }, 1000);
         },
@@ -150,13 +164,21 @@ function CreatePlaylist(): React.ReactElement {
 
   return (
     <div className="bg-white dark:bg-gray-800 min-h-screen">
-      {isDoneCreatePlaylist && (
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
         <Alert
-          titlePlaylist={playlistValue?.titlePlaylist}
-          urlPlaylist={currentPlaylist?.spotifyUrl}
-          isError={isErrorCreatePlaylist}
-        />
-      )}
+          onClose={handleCloseSnackbar}
+          severity={isErrorCreatePlaylist ? "error" : "success"}
+        >
+          {isErrorCreatePlaylist
+            ? "Error Create Playlist."
+            : "Sucess Add New Playlist"}
+        </Alert>
+      </Snackbar>
       <div className="flex flex-col min-h-screen">
         <div className="m-auto">
           <Searchbar
