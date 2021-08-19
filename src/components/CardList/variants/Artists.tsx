@@ -6,11 +6,11 @@ const ArtistVariant: React.FC<variantType<ArtistObject>> = (props) => {
   const { items } = props;
 
   return (
-    <div className="flex flex-wrap justify-center items-stretch space-x-4">
+    <div className="flex flex-wrap justify-center items-stretch">
       {items.map((item) => (
         <div
           key={item.id}
-          className="flex flex-col items-center rounded overflow-hidden shadow-lg text-center transition duration-200 ease-in-out hover:bg-secondary-light dark:hover:bg-secondary-dark dark:bg-gray-700 dark:bg-opacity-10 my-10"
+          className="mx-4 flex flex-col items-center rounded overflow-hidden shadow-lg text-center transition duration-200 ease-in-out hover:bg-secondary-light dark:hover:bg-secondary-dark dark:bg-gray-700 dark:bg-opacity-10 my-10"
         >
           <img
             className="rounded-full"

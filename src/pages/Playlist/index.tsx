@@ -122,8 +122,8 @@ const PlaylistPage = (): React.ReactElement => {
 
   return (
     <div className="bg-white dark:bg-gray-800 min-h-screen">
-      <div className="grid grid-cols-sidebar">
-        <div className="h-full">
+      <div className="grid md:grid-cols-sidebar">
+        <div className="hidden md:block h-full">
           <Sidebar />
         </div>
 

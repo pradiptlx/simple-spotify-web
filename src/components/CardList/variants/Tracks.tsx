@@ -8,11 +8,11 @@ const TrackVariant: React.FC<variantType<TrackObject>> = (props) => {
   const { items } = props;
 
   return (
-    <div className="flex flex-wrap justify-center items-stretch space-x-4">
+    <div className="flex flex-wrap justify-center items-stretch">
       {items.map((item) => (
         <div
           key={item.id}
-          className="max-w-sm rounded overflow-hidden shadow-lg text-center transition duration-200 ease-in-out hover:bg-secondary-light dark:hover:bg-secondary-dark dark:bg-gray-700 my-10"
+          className="mx-4 max-w-sm rounded overflow-hidden shadow-lg text-center transition duration-200 ease-in-out hover:bg-secondary-light dark:hover:bg-secondary-dark dark:bg-gray-700 my-10"
         >
           <AlbumArt
             albumArtFetched={item.album.images[0].url}

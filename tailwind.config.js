@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        sidebar: "minmax(0, 0.2fr) minmax(0, 1.8fr)",
+        sidebar: "minmax(0, 0.3fr) minmax(0, 1.7fr)",
       },
       backgroundColor: {
         primary: {
