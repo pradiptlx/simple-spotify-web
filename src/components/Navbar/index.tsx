@@ -17,11 +17,23 @@ import {
 } from "redux/actions/authorization";
 import { setCurrentUser } from "redux/actions/user";
 import { initialUserState } from "redux/reducers/user";
-
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import ToggleTheme from "components/ToggleTheme";
 import styles from "./style.module.css";
 
+const useStyles = makeStyles((theme: Theme) => ({
+  paperRoot: {
+    width: "100%",
+    backgroundColor:
+      theme.palette.type === "dark"
+        ? theme.palette.primary.dark
+        : theme.palette.primary.light,
+    color: "white",
+  },
+}));
+
 const Navbar = (): React.ReactElement => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const userProfile = useSelector((state) => state.user);
@@ -132,7 +144,7 @@ const Navbar = (): React.ReactElement => {
                             : "center bottom",
                       }}
                     >
-                      <Paper>
+                      <Paper className={classes.paperRoot}>
                         <ClickAwayListener onClickAway={handleCloseMenuAvater}>
                           <MenuList
                             autoFocusItem={profileMenuOpen}
@@ -142,7 +154,7 @@ const Navbar = (): React.ReactElement => {
                             <MenuItem onClick={handleCloseMenuAvater}>
                               <a
                                 href={userProfile.external_urls.spotify}
-                                className="block px-4 py-2 text-sm text-gray-700"
+                                className="block px-4 py-2 text-sm text-white"
                                 id="user-menu-item-0"
                                 target="_blank"
                                 rel="noreferrer"
@@ -152,7 +164,7 @@ const Navbar = (): React.ReactElement => {
                             </MenuItem>
                             <MenuItem onClick={handleCloseMenuAvater}>
                               <button
-                                className="block px-4 py-2 text-sm text-gray-700"
+                                className="block px-4 py-2 text-sm text-white"
                                 role="menuitem"
                                 onClick={signOutHandler}
                                 type="button"
