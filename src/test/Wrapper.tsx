@@ -23,6 +23,8 @@ type renderWrapperProps = (
   options: Omit<RenderOptions, "wrapper"> & {
     route?: string;
     store?: Store;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    initialStore?: any;
   }
 ) => { history: MemoryHistory; rendered: RenderResult };
 
@@ -41,11 +43,24 @@ export const defaultStoreTest = createStore(
 
 const RenderWithWrapper: renderWrapperProps = (
   component,
-  { route = "/", store = defaultStoreTest, ...options }
+  { route = "/", store = defaultStoreTest, initialStore, ...options }
 ) => {
+  let wrapperStore = store;
+  if (typeof initialStore !== "undefined") {
+    wrapperStore = createStore(
+      combineReducers({
+        authorization: authorizationReducer,
+        user: userReducer,
+        app: applicationReducer,
+      }),
+      {
+        ...initialStore,
+      }
+    );
+  }
   const history = createMemoryHistory({ initialEntries: [route] });
   const Wrapper: React.FC = ({ children }) => (
-    <Provider store={store}>
+    <Provider store={wrapperStore}>
       <Router history={history}>{children}</Router>
     </Provider>
   );
