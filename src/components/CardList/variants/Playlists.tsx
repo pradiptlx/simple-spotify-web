@@ -13,6 +13,14 @@ const PlaylistVariant: React.FC<variantType<SimplifiedPlaylistObject>> = (
         <div
           key={item.id}
           className="mx-4 max-w-sm rounded overflow-hidden shadow-lg text-center transition duration-200 ease-in-out hover:bg-secondary-light dark:hover:bg-secondary-dark dark:bg-gray-700 my-10"
+          onClick={() => {
+            window.open(item.external_urls.spotify, "_blank");
+          }}
+          onKeyPress={() => {
+            window.open(item.external_urls.spotify, "_blank");
+          }}
+          role="button"
+          tabIndex={0}
         >
           <img
             className="w-full rounded-lg"
