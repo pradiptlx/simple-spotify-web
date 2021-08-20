@@ -1,46 +1,44 @@
-# Getting Started with Create React App
+# Simple Spotify Web (actually: Create Playlist Spotify Web)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Intro
 
-In the project directory, you can run:
+Nowdays, Javascript can be anywhere and everywhere. Using React as Frontend Library, this web can be learning track for me and also for side project as React is the most wanted library to learn (as [StackOverflow 2021 Survey](https://insights.stackoverflow.com/survey/2021?_ga=2.236209345.190202062.1628102352-126161871.1625855113#section-most-popular-technologies-web-frameworks)). I like listening to music with Spotify, then I want to try using their API as my project (and for GIGIH Final Project of course 😄). But because of complexity in Audio API, currently this app only serve as Create Playlist and Show Saved Library from User. Yeah, that is for the intro.
 
-### `yarn start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Search Tracks
+- Create Playlists from Selected Tracks
+- Show Trending Playlists (Region ID)
+- Show User Library
+  - Following Artists
+  - Saved Albums
+  - Saved Tracks
+  - Saved Playlists
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Installation
 
-### `yarn test`
+If you want to try (or maybe help me to improve) this app on your local development, just install with
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```sh
+yarn install
+```
 
-### `yarn build`
+and run development server.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```sh
+yarn start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Don't forget to run test with
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```sh
+yarn test
+```
 
-### `yarn eject`
+and help me find some bug.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Link
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+[Website](https://simple-spotify-web.vercel.app/) (If you want to try, send to me your email because Spotify develompent API is limited into the account)
