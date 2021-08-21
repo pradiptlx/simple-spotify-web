@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Intro
 
-Nowdays, Javascript can be anywhere and everywhere. Using React as Frontend Library, this web can be learning track for me and also for side project as React is the most wanted library to learn (as [StackOverflow 2021 Survey](https://insights.stackoverflow.com/survey/2021?_ga=2.236209345.190202062.1628102352-126161871.1625855113#section-most-popular-technologies-web-frameworks)). I like listening to music with Spotify, then I want to try using their API as my project (and for GIGIH Final Project of course 😄). But because of complexity in Audio API, currently this app only serve as Create Playlist and Show Saved Library from User. Yeah, that is for the intro.
+This project is nothing more than a side project as React is the most wanted library to learn (based on [StackOverflow 2021 Survey](https://insights.stackoverflow.com/survey/2021?_ga=2.236209345.190202062.1628102352-126161871.1625855113#section-most-popular-technologies-web-frameworks)) and this is also for my final project in Generasi GIGIH, a program from Yayasan Anak Bangsa Bisa. I like listening to music with Spotify, so it's worth it to explore and try to use their API but because of complexity in Audio API, currently this app only serve as Create Playlist and Show Saved Library from User. Yeah, that is for the intro.
 
 ## Features
 
@@ -41,4 +41,4 @@ and help me find some bug.
 
 ## Link
 
-[Website](https://simple-spotify-web.vercel.app/) (If you want to try, send to me your email because Spotify develompent API is limited into the account)
+[Website](https://simple-spotify-web.vercel.app/) (If you want to try, send to me your email because Spotify development API is limited into the account)
