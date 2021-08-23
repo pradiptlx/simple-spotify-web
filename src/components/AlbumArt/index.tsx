@@ -9,6 +9,7 @@ type albumArtProps = {
   altText?: string;
   isSelected?: boolean;
   urlSpotify?: string;
+  playerHandler?: () => void;
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -31,6 +32,7 @@ const AlbumArt: React.FC<albumArtProps> = (props) => {
     altText = "",
     isSelected = false,
     urlSpotify,
+    playerHandler,
   } = props;
   const [isHover, setIsHover] = React.useState(false);
 
@@ -64,17 +66,19 @@ const AlbumArt: React.FC<albumArtProps> = (props) => {
           }}
         />
       )}
-      {typeof urlSpotify !== "undefined" && (
-        <Zoom in={isHover}>
-          <PlayCircleFilledIcon
-            onClick={() => {
-              window.open(urlSpotify, "_blank");
-            }}
-            role="button"
-            className={classes.playIcon}
-          />
-        </Zoom>
-      )}
+      {typeof urlSpotify !== "undefined" &&
+        typeof playerHandler !== "undefined" && (
+          <Zoom in={isHover}>
+            <PlayCircleFilledIcon
+              onClick={() => {
+                playerHandler();
+                window.open(urlSpotify, "_blank");
+              }}
+              role="button"
+              className={classes.playIcon}
+            />
+          </Zoom>
+        )}
     </div>
   );
 };
