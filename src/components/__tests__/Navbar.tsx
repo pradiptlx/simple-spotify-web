@@ -11,6 +11,7 @@ import { userReducer } from "redux/reducers/user";
 type renderNavbarProps = {
   route: string;
   store?: Store;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialStore?: any;
 };
 
