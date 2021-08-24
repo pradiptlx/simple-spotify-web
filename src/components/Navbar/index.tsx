@@ -198,7 +198,9 @@ const Navbar = (): React.ReactElement => {
                 <img
                   className="h-8 w-8 rounded-full"
                   src={
-                    userProfile.images.length ? userProfile.images[0].url : ""
+                    userProfile.images.length > 0
+                      ? userProfile.images[0].url
+                      : "/logo192.png"
                   }
                   alt={userProfile.id}
                   onClick={handleClickAvatar}
@@ -334,9 +336,9 @@ const Navbar = (): React.ReactElement => {
                           <img
                             className="h-6 w-6 rounded-full"
                             src={
-                              userProfile.images.length
+                              userProfile.images.length > 0
                                 ? userProfile.images[0].url
-                                : ""
+                                : "/logo192.png"
                             }
                             alt={userProfile.id}
                             onClick={() => {
