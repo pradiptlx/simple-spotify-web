@@ -59,6 +59,14 @@ type getCurrentUserSavedDataType = queryParameter & {
   type: "albums" | "tracks" | "following" | "playlists";
 };
 
+type startUserPlaybackType = {
+  context_uri?: string;
+  uris?: string[];
+  offset?: number;
+  position_ms?: number;
+  device_id?: string;
+};
+
 // **********************************************
 
 type getQueryAPIRequestFn<Q> = (
@@ -313,6 +321,108 @@ const getCurrentUserSavedData: getQueryAPIRequestFn<getCurrentUserSavedDataType>
     }
   };
 
+const getInformationUserPlayback: getAPIRequestFn = async (
+  { accessToken },
+  setResponseFn,
+  errorCallbackFn
+) => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_SPOTIFY_API_URL}/me/player`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    setResponseFn(response.data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      errorCallbackFn({
+        error: error.message,
+        statusCode: error.response?.status,
+      });
+    }
+  }
+};
+
+const getUserDevices: getAPIRequestFn = async (
+  { accessToken },
+  setResponseFn,
+  errorCallbackFn
+) => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_SPOTIFY_API_URL}/me/player/devices`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    setResponseFn(response.data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      errorCallbackFn({
+        error: error.message,
+        statusCode: error.response?.status,
+      });
+    }
+  }
+};
+
+const startUserPlayback: getQueryAPIRequestFn<startUserPlaybackType> = async (
+  { context_uri, uris, offset, position_ms, device_id },
+  { accessToken },
+  setResponseFn,
+  errorCallbackFn
+) => {
+  try {
+    const response = await axios.put(
+      `${process.env.REACT_APP_SPOTIFY_API_URL}/me/player/play`,
+      {
+        context_uri,
+        uris,
+        offset,
+        position_ms,
+        device_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.status === 204 || response.status === 200) {
+      setResponseFn({
+        isPlaybackError: false,
+        playbackMessage: "Playing on active device.",
+      });
+    } else if (response.status === 403) {
+      setResponseFn({
+        isPlaybackError: true,
+        playbackMessage: "User must subscribed to premium account",
+      });
+    } else if (response.status === 404) {
+      setResponseFn({
+        isPlaybackError: true,
+        playbackMessage: "Active device not found",
+      });
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      errorCallbackFn({
+        error: error.message,
+        statusCode: error.response?.status,
+      });
+    }
+  }
+};
+
 export {
   searchSpotify,
   fetchCurrentUserProfile,
@@ -321,4 +431,7 @@ export {
   addTrackToPlaylist,
   getAllFeaturedPlaylists,
   getCurrentUserSavedData,
+  startUserPlayback,
+  getInformationUserPlayback,
+  getUserDevices,
 };

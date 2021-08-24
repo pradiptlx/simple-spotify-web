@@ -36,7 +36,7 @@ const getAuthorizedToken = async ({
     response_type: "token",
     redirect_uri: `${process.env.REACT_APP_URL}login/`,
     scope:
-      "playlist-modify-private,user-library-read,user-follow-modify,user-follow-read",
+      "playlist-modify-private,user-library-read,user-follow-modify,user-follow-read,user-modify-playback-state,user-read-playback-state",
     state: generateRandomString(10),
   });
   try {

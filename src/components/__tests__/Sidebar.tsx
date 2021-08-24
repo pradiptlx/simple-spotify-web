@@ -1,6 +1,6 @@
 import React from "react";
 import { combineReducers, createStore, Store } from "@reduxjs/toolkit";
-import { act, render, waitFor } from "test/Wrapper";
+import { render, waitFor } from "test/Wrapper";
 import Sidebar from "components/Sidebar";
 import { applicationReducer } from "redux/reducers/app";
 import { authorizationReducer } from "redux/reducers/authorization";
@@ -11,6 +11,7 @@ import { build, fake } from "@jackfranklin/test-data-bot";
 type renderSidebarType = {
   route: string;
   store?: Store;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialStore?: any;
 };
 
