@@ -11,6 +11,12 @@ import { TrackObject } from "api/interfaces";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
 import CardList from "components/CardList";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+import {
+  setCurrentUserPlayback,
+  setUserPlaybackResponse,
+} from "redux/actions/app";
 
 const emptyDataComponent = () => (
   <div className="flex flex-wrap justify-center items-stretch space-x-4">
@@ -69,9 +75,22 @@ const TrackPage = (): React.ReactElement => {
   const { accessToken, isAccessTokenExists } = useSelector(
     (state) => state.authorization
   );
-  const { currentUserPlaylists } = useSelector((state) => state.app);
-
+  const { currentUserPlaylists, userPlayback, currentPlayback } = useSelector(
+    (state) => state.app
+  );
   const [tracks, setTracks] = React.useState<TrackObject[]>([]);
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
+  const handleCloseSnackbar = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackbar(false);
+  };
 
   const errorFetchingHandler = ({ statusCode }: errorArgFn) => {
     if (statusCode === 400 || statusCode === 401) {
@@ -104,6 +123,29 @@ const TrackPage = (): React.ReactElement => {
     };
   }, [fetchHandler]);
 
+  React.useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    if (userPlayback.playbackMessage !== "" && "name" in currentPlayback) {
+      setOpenSnackbar(true);
+      timer = setTimeout(() => {
+        setOpenSnackbar(false);
+        dispatch(
+          setUserPlaybackResponse({
+            playbackMessage: "",
+            isPlaybackError: false,
+          })
+        );
+        dispatch(
+          setCurrentUserPlayback({ currentPlayback: {} as TrackObject })
+        );
+      }, 6000);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [userPlayback, currentPlayback]);
+
   return (
     <div className="bg-white dark:bg-gray-800 min-h-screen">
       <div className="grid md:grid-cols-sidebar">
@@ -111,11 +153,27 @@ const TrackPage = (): React.ReactElement => {
           <Sidebar />
         </div>
 
-        <CardList
-          type="tracks"
-          cardListItems={tracks}
-          emptyDataComponentFn={emptyDataComponent}
-        />
+        <div className="flex flex-col justify-center items-center">
+          <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            open={openSnackbar}
+            autoHideDuration={6000}
+            onClose={handleCloseSnackbar}
+          >
+            <Alert
+              onClose={handleCloseSnackbar}
+              severity={userPlayback.isPlaybackError ? "error" : "success"}
+            >
+              {currentPlayback?.name || ""} 🎵 {userPlayback.playbackMessage}
+            </Alert>
+          </Snackbar>
+          <h1 className="text-3xl dark:text-white my-5">My Saved Tracks</h1>
+          <CardList
+            type="tracks"
+            cardListItems={tracks}
+            emptyDataComponentFn={emptyDataComponent}
+          />
+        </div>
       </div>
     </div>
   );
