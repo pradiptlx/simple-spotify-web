@@ -2,10 +2,12 @@ import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import { SimplifiedPlaylistObject, TrackObject } from "api/interfaces";
 import {
   pageDataType,
+  setCurrentUserPlayback,
   setDarkTheme,
   setPageData,
-  setUserPlayback,
-  userPlaybackType,
+  setUserPlaybackResponse,
+  playbackResponseType,
+  currentUserPlaybackType,
 } from "redux/actions/app";
 
 const initialApplicationState = {
@@ -14,8 +16,8 @@ const initialApplicationState = {
   userPlayback: {
     isPlaybackError: false,
     playbackMessage: "",
-    currentPlayback: {} as TrackObject,
   },
+  currentPlayback: {} as TrackObject,
 };
 
 const applicationReducer = createReducer(initialApplicationState, (builder) => {
@@ -33,10 +35,20 @@ const applicationReducer = createReducer(initialApplicationState, (builder) => {
   );
 
   builder.addCase(
-    setUserPlayback,
-    (state, action: PayloadAction<userPlaybackType>) => ({
+    setUserPlaybackResponse,
+    (state, action: PayloadAction<playbackResponseType>) => ({
       ...state,
-      ...action.payload,
+      userPlayback: {
+        ...action.payload,
+      },
+    })
+  );
+
+  builder.addCase(
+    setCurrentUserPlayback,
+    (state, action: PayloadAction<currentUserPlaybackType>) => ({
+      ...state,
+      currentPlayback: action.payload.currentPlayback,
     })
   );
 });

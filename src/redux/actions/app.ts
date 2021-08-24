@@ -5,10 +5,15 @@ export type pageDataType = {
   currentUserPlaylists: SimplifiedPlaylistObject[];
 };
 
+export type playbackResponseType = {
+  isPlaybackError: boolean;
+  playbackMessage: string;
+};
+
+export type currentUserPlaybackType = { currentPlayback: TrackObject };
+
 export type userPlaybackType = {
-  isPlaybackError?: boolean;
-  playbackMessage?: string;
-  currentPlayback?: TrackObject;
+  userPlayback: playbackResponseType & currentUserPlaybackType;
 };
 
 const setDarkTheme = createAction<boolean>("app/set_dark_theme");
@@ -22,15 +27,26 @@ const setPageData = createAction(
   })
 );
 
-const setUserPlayback = createAction(
+const setUserPlaybackResponse = createAction(
   "app/set_user_playback",
-  ({ isPlaybackError, playbackMessage, currentPlayback }) => ({
+  ({ isPlaybackError, playbackMessage }: playbackResponseType) => ({
     payload: {
       isPlaybackError,
       playbackMessage,
-      currentPlayback,
     },
   })
 );
 
-export { setDarkTheme, setPageData, setUserPlayback };
+const setCurrentUserPlayback = createAction(
+  "app/set_current_user_playback",
+  ({ currentPlayback }: currentUserPlaybackType) => ({
+    payload: { currentPlayback },
+  })
+);
+
+export {
+  setDarkTheme,
+  setPageData,
+  setUserPlaybackResponse,
+  setCurrentUserPlayback,
+};

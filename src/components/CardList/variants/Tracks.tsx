@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from "react";
 import {
   useAppSelector as useSelector,
@@ -13,7 +12,10 @@ import {
   getInformationUserPlayback,
   startUserPlayback,
 } from "api/fetch";
-import { setUserPlayback } from "redux/actions/app";
+import {
+  setCurrentUserPlayback,
+  setUserPlaybackResponse,
+} from "redux/actions/app";
 import { variantType } from "..";
 
 const TrackVariant: React.FC<variantType<TrackObject>> = (props) => {
@@ -45,20 +47,35 @@ const TrackVariant: React.FC<variantType<TrackObject>> = (props) => {
         isPlaybackError: boolean;
         playbackMessage: string;
       }) => {
-        dispatch(setUserPlayback({ isPlaybackError, playbackMessage }));
+        dispatch(
+          setUserPlaybackResponse({
+            isPlaybackError,
+            playbackMessage,
+          })
+        );
       },
-      ({ statusCode }: errorArgFn) => {
-        console.error(statusCode);
+      ({ error }: errorArgFn) => {
+        dispatch(
+          setUserPlaybackResponse({
+            isPlaybackError: true,
+            playbackMessage: error,
+          })
+        );
       }
     );
 
     await getInformationUserPlayback(
       { accessToken },
       (response) => {
-        dispatch(setUserPlayback({ currentPlayback: response.item }));
+        dispatch(setCurrentUserPlayback({ currentPlayback: response.item }));
       },
-      ({ statusCode }: errorArgFn) => {
-        console.error(statusCode);
+      ({ error }: errorArgFn) => {
+        dispatch(
+          setUserPlaybackResponse({
+            isPlaybackError: true,
+            playbackMessage: error,
+          })
+        );
       }
     );
   };
