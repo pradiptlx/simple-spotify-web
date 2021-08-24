@@ -16,12 +16,20 @@ This project is nothing more than a side project as React is the most wanted lib
   - Saved Albums
   - Saved Tracks
   - Saved Playlists
+- Play tracks (limited)
+
+## Requirements
+
+- Node 14+
+- NPM
+- That's it. Just do step below
 
 ## Installation
 
 If you want to try (or maybe help me to improve) this app on your local development, just install with
 
 ```sh
+cp .env .env.local # open https://developer.spotify.com/dashboard/applications and add config env with your key (don't forget add hostname configuration)
 yarn install
 ```
 
@@ -31,7 +39,7 @@ and run development server.
 yarn start
 ```
 
-Don't forget to run test with
+Don't forget to run test (if you write the test) with
 
 ```sh
 yarn test

@@ -18,6 +18,7 @@ import {
   setCurrentUserPlayback,
   setUserPlaybackResponse,
 } from "redux/actions/app";
+import { playerResponseType } from "pages/Track";
 
 const emptyDataComponent = () => (
   <div className="flex flex-wrap justify-center items-stretch space-x-4">
@@ -84,6 +85,8 @@ const PlaylistPage = (): React.ReactElement => {
   const [currentPlalist, setCurrentPlaylist] =
     React.useState<Pick<PlaylistObject, "name" | "description" | "id">>();
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [currentPlayerResponse, setCurrentPlayerResponse] =
+    React.useState<playerResponseType>({} as playerResponseType);
 
   const handleCloseSnackbar = (
     event?: React.SyntheticEvent,
@@ -144,6 +147,11 @@ const PlaylistPage = (): React.ReactElement => {
     let timer: ReturnType<typeof setTimeout>;
     if (userPlayback.playbackMessage !== "" && "name" in currentPlayback) {
       setOpenSnackbar(true);
+      setCurrentPlayerResponse({
+        title: currentPlayback.name,
+        message: userPlayback.playbackMessage,
+        isError: userPlayback.isPlaybackError,
+      });
       timer = setTimeout(() => {
         setOpenSnackbar(false);
         dispatch(
@@ -179,9 +187,10 @@ const PlaylistPage = (): React.ReactElement => {
           >
             <Alert
               onClose={handleCloseSnackbar}
-              severity={userPlayback.isPlaybackError ? "error" : "success"}
+              severity={currentPlayerResponse?.isError ? "error" : "success"}
             >
-              {currentPlayback?.name || ""} 🎵 {userPlayback.playbackMessage}
+              {currentPlayerResponse?.title || ""} 🎵{" "}
+              {currentPlayerResponse?.message}
             </Alert>
           </Snackbar>
           <h1 className="text-3xl dark:text-white my-5">

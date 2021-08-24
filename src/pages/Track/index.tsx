@@ -69,6 +69,12 @@ const emptyDataComponent = () => (
   </div>
 );
 
+export type playerResponseType = {
+  title: string;
+  isError: boolean;
+  message: string;
+};
+
 const TrackPage = (): React.ReactElement => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -80,6 +86,8 @@ const TrackPage = (): React.ReactElement => {
   );
   const [tracks, setTracks] = React.useState<TrackObject[]>([]);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [currentPlayerResponse, setCurrentPlayerResponse] =
+    React.useState<playerResponseType>({} as playerResponseType);
 
   const handleCloseSnackbar = (
     event?: React.SyntheticEvent,
@@ -127,6 +135,11 @@ const TrackPage = (): React.ReactElement => {
     let timer: ReturnType<typeof setTimeout>;
     if (userPlayback.playbackMessage !== "" && "name" in currentPlayback) {
       setOpenSnackbar(true);
+      setCurrentPlayerResponse({
+        title: currentPlayback.name,
+        message: userPlayback.playbackMessage,
+        isError: userPlayback.isPlaybackError,
+      });
       timer = setTimeout(() => {
         setOpenSnackbar(false);
         dispatch(
@@ -162,9 +175,10 @@ const TrackPage = (): React.ReactElement => {
           >
             <Alert
               onClose={handleCloseSnackbar}
-              severity={userPlayback.isPlaybackError ? "error" : "success"}
+              severity={currentPlayerResponse?.isError ? "error" : "success"}
             >
-              {currentPlayback?.name || ""} 🎵 {userPlayback.playbackMessage}
+              {currentPlayerResponse?.title || ""} 🎵{" "}
+              {currentPlayerResponse?.message}
             </Alert>
           </Snackbar>
           <h1 className="text-3xl dark:text-white my-5">My Saved Tracks</h1>
