@@ -12,6 +12,8 @@ import { setExpiredTokenTime } from "redux/actions/authorization";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
 import CardList from "components/CardList";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 const emptyDataComponent = () => (
   <div className="flex flex-wrap justify-center items-stretch space-x-4">
@@ -71,10 +73,24 @@ const PlaylistPage = (): React.ReactElement => {
   const { accessToken, isAccessTokenExists } = useSelector(
     (state) => state.authorization
   );
-  const { currentUserPlaylists } = useSelector((state) => state.app);
+  const { currentUserPlaylists, userPlayback, currentPlayback } = useSelector(
+    (state) => state.app
+  );
   const [tracks, setTracks] = React.useState<TrackObject[]>([]);
   const [currentPlalist, setCurrentPlaylist] =
     React.useState<Pick<PlaylistObject, "name" | "description" | "id">>();
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
+  const handleCloseSnackbar = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackbar(false);
+  };
 
   const errorFetchingHandler = ({ statusCode }: errorArgFn) => {
     if (statusCode === 400 || statusCode === 401) {
@@ -120,6 +136,20 @@ const PlaylistPage = (): React.ReactElement => {
     };
   }, [fetchHandler]);
 
+  React.useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    if (userPlayback.playbackMessage !== "") {
+      setOpenSnackbar(true);
+      timer = setTimeout(() => {
+        setOpenSnackbar(false);
+      }, 6000);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [userPlayback]);
+
   return (
     <div className="bg-white dark:bg-gray-800 min-h-screen">
       <div className="grid md:grid-cols-sidebar">
@@ -128,6 +158,19 @@ const PlaylistPage = (): React.ReactElement => {
         </div>
 
         <div className="flex flex-col justify-center items-center">
+          <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            open={openSnackbar}
+            autoHideDuration={6000}
+            onClose={handleCloseSnackbar}
+          >
+            <Alert
+              onClose={handleCloseSnackbar}
+              severity={userPlayback.isPlaybackError ? "error" : "success"}
+            >
+              {currentPlayback.name} 🎵 {userPlayback.playbackMessage}
+            </Alert>
+          </Snackbar>
           <h1 className="text-3xl dark:text-white my-5">
             {currentPlalist?.name}
           </h1>
