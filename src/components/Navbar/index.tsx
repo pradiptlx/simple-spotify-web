@@ -202,7 +202,7 @@ const Navbar = (): React.ReactElement => {
                       ? userProfile.images[0].url
                       : "/logo192.png"
                   }
-                  alt={userProfile.id}
+                  alt={userProfile.display_name}
                   onClick={handleClickAvatar}
                   ref={anchorRef}
                   role="presentation"
@@ -340,7 +340,7 @@ const Navbar = (): React.ReactElement => {
                                 ? userProfile.images[0].url
                                 : "/logo192.png"
                             }
-                            alt={userProfile.id}
+                            alt={userProfile.display_name}
                             onClick={() => {
                               setProfileMenuOpen(!profileMenuOpen);
                             }}
