@@ -14,6 +14,10 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import CardList from "components/CardList";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import {
+  setCurrentUserPlayback,
+  setUserPlaybackResponse,
+} from "redux/actions/app";
 
 const emptyDataComponent = () => (
   <div className="flex flex-wrap justify-center items-stretch space-x-4">
@@ -138,17 +142,26 @@ const PlaylistPage = (): React.ReactElement => {
 
   React.useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
-    if (userPlayback.playbackMessage !== "") {
+    if (userPlayback.playbackMessage !== "" && "name" in currentPlayback) {
       setOpenSnackbar(true);
       timer = setTimeout(() => {
         setOpenSnackbar(false);
+        dispatch(
+          setUserPlaybackResponse({
+            playbackMessage: "",
+            isPlaybackError: false,
+          })
+        );
+        dispatch(
+          setCurrentUserPlayback({ currentPlayback: {} as TrackObject })
+        );
       }, 6000);
     }
 
     return () => {
       clearTimeout(timer);
     };
-  }, [userPlayback]);
+  }, [userPlayback, currentPlayback]);
 
   return (
     <div className="bg-white dark:bg-gray-800 min-h-screen">
@@ -168,7 +181,7 @@ const PlaylistPage = (): React.ReactElement => {
               onClose={handleCloseSnackbar}
               severity={userPlayback.isPlaybackError ? "error" : "success"}
             >
-              {currentPlayback.name} 🎵 {userPlayback.playbackMessage}
+              {currentPlayback?.name || ""} 🎵 {userPlayback.playbackMessage}
             </Alert>
           </Snackbar>
           <h1 className="text-3xl dark:text-white my-5">
