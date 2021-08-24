@@ -70,7 +70,7 @@ function CreatePlaylist(): React.ReactElement {
   const onSearchHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     searchSpotify(
-      { type: "track", limit: 10, searchValue },
+      { type: "track", limit: 50, searchValue },
       { accessToken },
       memoTracks,
       ({ statusCode }) => {
