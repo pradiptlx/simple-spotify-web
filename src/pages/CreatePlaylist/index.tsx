@@ -122,7 +122,9 @@ function CreatePlaylist(): React.ReactElement {
       }
     } else {
       // eslint-disable-next-line no-alert
-      alert("Minimal Title 10 Kata & Description 20 Kata");
+      alert(
+        "Please add Title minimal 10 characters & Description minimal 20 characters"
+      );
     }
   };
 
