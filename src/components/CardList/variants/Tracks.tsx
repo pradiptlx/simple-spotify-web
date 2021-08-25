@@ -9,7 +9,7 @@ import { TrackObject } from "api/interfaces";
 import {
   // getUserDevices,
   errorArgFn,
-  getInformationUserPlayback,
+  // getInformationUserPlayback,
   startUserPlayback,
 } from "api/fetch";
 import {
@@ -25,7 +25,7 @@ const TrackVariant: React.FC<variantType<TrackObject>> = (props) => {
 
   // const [devicePlayback, setDevicePlayback] = React.useState({ id: "" });
 
-  const playerHandler = async (uriSpotify: string) => {
+  const playerHandler = async (itemTrack: TrackObject) => {
     // await getUserDevices(
     //   { accessToken },
     //   (response) => {
@@ -38,7 +38,7 @@ const TrackVariant: React.FC<variantType<TrackObject>> = (props) => {
     // );
 
     await startUserPlayback(
-      { uris: [uriSpotify], position_ms: 0 },
+      { uris: [itemTrack.uri], position_ms: 0 },
       { accessToken },
       ({
         isPlaybackError,
@@ -63,21 +63,23 @@ const TrackVariant: React.FC<variantType<TrackObject>> = (props) => {
         );
       }
     );
+    dispatch(setCurrentUserPlayback({ currentPlayback: itemTrack }));
 
-    await getInformationUserPlayback(
-      { accessToken },
-      (response) => {
-        dispatch(setCurrentUserPlayback({ currentPlayback: response.item }));
-      },
-      ({ error }: errorArgFn) => {
-        dispatch(
-          setUserPlaybackResponse({
-            isPlaybackError: true,
-            playbackMessage: error,
-          })
-        );
-      }
-    );
+    // await getInformationUserPlayback(
+    //   { accessToken },
+    //   (response) => {
+    //     dispatch(setCurrentUserPlayback({ currentPlayback: response.item }));
+    //   },
+    //   ({ error }: errorArgFn) => {
+    //     dispatch(
+    //       setUserPlaybackResponse({
+    //         isPlaybackError: true,
+    //         playbackMessage: error,
+    //       })
+    //     );
+    //     dispatch(setCurrentUserPlayback({ currentPlayback: itemTrack }));
+    //   }
+    // );
   };
 
   return (
@@ -92,7 +94,7 @@ const TrackVariant: React.FC<variantType<TrackObject>> = (props) => {
             altText={item.name}
             urlSpotify={item.external_urls.spotify}
             playerHandler={() => {
-              playerHandler(item.uri);
+              playerHandler(item);
             }}
           />
           <TrackInfo
