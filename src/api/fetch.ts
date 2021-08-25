@@ -402,21 +402,17 @@ const startUserPlayback: getQueryAPIRequestFn<startUserPlaybackType> = async (
         isPlaybackError: false,
         playbackMessage: "Playing on active device.",
       });
-    } else if (response.status === 403) {
-      setResponseFn({
-        isPlaybackError: true,
-        playbackMessage: "User must subscribed to premium account",
-      });
-    } else if (response.status === 404) {
-      setResponseFn({
-        isPlaybackError: true,
-        playbackMessage: "Active device not found",
-      });
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
+      let responseErrorMsg = error.message;
+      if (error.response?.status === 403) {
+        responseErrorMsg = "User must subscribed to premium account";
+      } else if (error.response?.status === 404) {
+        responseErrorMsg = "Active device not found";
+      }
       errorCallbackFn({
-        error: error.message,
+        error: responseErrorMsg,
         statusCode: error.response?.status,
       });
     }

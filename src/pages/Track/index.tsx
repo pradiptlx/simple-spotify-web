@@ -133,7 +133,11 @@ const TrackPage = (): React.ReactElement => {
 
   React.useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
-    if (userPlayback.playbackMessage !== "" && "name" in currentPlayback) {
+    if (
+      userPlayback.playbackMessage !== "" &&
+      typeof currentPlayback !== "undefined" &&
+      "name" in currentPlayback
+    ) {
       setOpenSnackbar(true);
       setCurrentPlayerResponse({
         title: currentPlayback.name,
